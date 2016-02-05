@@ -1,0 +1,83 @@
+@startuml
+object Player {
+	Color
+	Cities
+	Money(Electro)
+	Power Plants
+	Resources on Plants
+}
+object Resources {
+	Type : Oil, Coal, Garbage, Uranium
+	Cost
+}
+object Power_Plant {
+	Value
+	Type of Resources
+	Number of Resources
+	Number of cities
+}
+object Board {
+	Graph of cities(Map)
+	Resources
+	Player Order
+	Score
+	Power Plant Market	
+}
+object City {
+	Value of next spot
+	Connected to
+	Value of connection
+}
+object Turns {
+	Step 1
+	Step 2
+	Step 3
+}
+object Player_Order {
+	Determine Player Order
+}
+object Auction {
+
+}
+object Buy_Resources {
+
+}
+object Build {
+
+}
+object Bureaucracy {
+	Power plants consume fuel
+	Players get paid
+	Replenish resources market
+	Power Plant Market Replacement
+}
+
+Board "1" <|-- "*" City
+Board "1" <|-right- "*" Power_Plant
+Board "1" <|-- "*" Resources
+Board  *-- Player_Order
+
+Power_Plant "1" -- "*" City
+Power_Plant "1" -- "*" Resources
+Power_Plant -- Auction
+Power_Plant -- Bureaucracy
+
+City -- Build
+
+Resources -- Buy_Resources
+Resources -- Bureaucracy
+
+Player "*" *-right- "1" Board
+Player .up. Turns
+Player -- Player_Order
+Player -- Bureaucracy
+Player "*" -- "*" City
+Player "1" -- "*" Power_Plant
+
+Turns <|-left- Player_Order
+Turns <|-right- Auction
+Turns <|-left- Buy_Resources
+Turns <|-right- Build
+Turns <|-left- Bureaucracy
+
+@enduml
