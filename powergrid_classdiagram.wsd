@@ -52,9 +52,9 @@ object Bureaucracy {
 	Power Plant Market Replacement
 }
 
-Board "1" <|-- "*" City
-Board "1" <|-right- "*" Power_Plant
-Board "1" <|-- "*" Resources
+Board "1" <|-right- "*" City
+Board "1" <|-- "*" Power_Plant
+Board "1" <|-left- "*" Resources
 Board  *-- Player_Order
 
 Power_Plant "1" -- "*" City
@@ -67,12 +67,10 @@ City -- Build
 Resources -- Buy_Resources
 Resources -- Bureaucracy
 
-Player "*" *-right- "1" Board
+Player "*" *-- "1" Board
 Player .up. Turns
 Player -- Player_Order
 Player -- Bureaucracy
-Player "*" -- "*" City
-Player "1" -- "*" Power_Plant
 
 Turns <|-left- Player_Order
 Turns <|-right- Auction
