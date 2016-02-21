@@ -1,10 +1,15 @@
 #include "powergrid.h"
+using namespace std;
 
 Player::Player() {
 	color = 'b';
 	money = 50;
 	numberOfPowerPlant = 0;
 	numberOfCities = 0;
+}
+
+Player::~Player() {
+	
 }
 
 Player::Player(char c) {
@@ -20,6 +25,14 @@ char Player::getColor() {
 
 void Player::setColor(char c) {
 	color = c;
+}
+
+void Player::setName(string aname) {
+	name = aname;
+}
+
+string Player::getName() {
+	return name;
 }
 
 City* Player::getCity() {

@@ -1,4 +1,4 @@
-powergrid.out : PowerGridDriver.o Player.o PowerPlant.o City.o
+powergrid.out : PowerGridDriver.o Player.o PowerPlant.o City.o SummaryCard.o
 	g++ -o powergrid.out PowerGridDriver.o Player.o PowerPlant.o City.o
 
 PowerGridDriver.o : PowerGridDriver.cpp powergrid.h
@@ -13,5 +13,8 @@ City.o : City.cpp powergrid.h
 PowerPlant.o : PowerPlant.cpp powergrid.h
 	g++ -c PowerPlant.cpp
 
+SummaryCard.o : SummaryCard.cpp powergrid.h
+	g++ -c SummaryCard.cpp
+
 clean :
-	rm powergrid.out PowerGridDriver.o Player.o City.o PowerPlant.o
+	rm powergrid.out PowerGridDriver.o Player.o City.o PowerPlant.o SummaryCard.o

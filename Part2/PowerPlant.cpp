@@ -17,6 +17,10 @@ PowerPlant::PowerPlant(int val, int consume, char rtype, int numCities) {
 	numberOfCities = numCities;
 }
 
+PowerPlant::~PowerPlant() {
+	
+}
+
 int PowerPlant::getValue() {
 	return value;
 }

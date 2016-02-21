@@ -1,7 +1,27 @@
 #include "powergrid.h"
+//#include <string>
+using namespace std;
 
 City::City() {
 	nextValue = 10;
+	name = "unknown";
+}
+
+City::City(string aname) {
+	nextValue = 10;
+	name = aname;
+}
+
+City::~City() {
+	
+}
+
+void City::setName(string aname) {
+	name = aname;
+}
+
+string City::getName() {
+	return name;
 }
 
 int City::getNextValue() {
