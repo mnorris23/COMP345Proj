@@ -56,7 +56,7 @@ Step 8. In the solution explorer, right-click on the name of the project(not Sol
 
 Step 9. You need to make the following three changes:
 
- Configuration Properties
+	Configuration Properties
         C/C++
             Code Generation
                 Runtime Library
