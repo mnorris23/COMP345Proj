@@ -12,6 +12,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Driver.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PowerPlant.cpp" />
+    <ClCompile Include="ResourceMarket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Driver.h" />
