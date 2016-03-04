@@ -1,0 +1,48 @@
+﻿Build started 3/2/2016 7:09:18 PM.
+     1>Project "E:\COMP 345\Project1\Project1\Project1.vcxproj" on node 2 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (Project1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt Driver.cpp
+         Driver.cpp
+     1>e:\comp 345\project1\project1\driver.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\player.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\player.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\house.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\player.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\powerplant.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\powerplant.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\powerplant.h(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\powerplant.h(8): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\powerplant.h(79): warning C4018: '>' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\powerplant.h(82): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\powerplant.h(95): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\player.h(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\player.h(60): warning C4018: '>' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(68): warning C4018: '>' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(77): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(80): warning C4018: '>' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(96): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\player.h(102): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\driver.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\driver.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\driver.h(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(4): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(5): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(6): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(7): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\resourcemarket.h(72): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\resourcemarket.h(206): warning C4018: '>=' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\resourcemarket.h(282): warning C4018: '>' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\resourcemarket.h(284): warning C4018: '<' : signed/unsigned mismatch
+     1>e:\comp 345\project1\project1\driver.h(8): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+     1>e:\comp 345\project1\project1\driver.cpp(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\COMP 345\Project1\Debug\Project1B.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:\COMP 345\Project1\Debug\Project1B.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\COMP 345\Project1\Debug\Project1B.lib" /MACHINE:X86 Debug\Driver.obj
+         Project1.vcxproj -> E:\COMP 345\Project1\Debug\Project1B.exe
+     1>Done Building Project "E:\COMP 345\Project1\Project1\Project1.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:03.64
