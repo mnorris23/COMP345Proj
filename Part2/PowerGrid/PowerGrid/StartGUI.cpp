@@ -1,19 +1,6 @@
-#include "powergrid.h"
+#include "StartGui.h"
 #include "PaymentTable.cpp"
-#include <iostream>
-#include <FL/Fl.H>
-#include <FL/Fl_window.H>
-#include <FL/Fl_Button.H>
-#include <FL/FL_Toggle_Button.H>
-#include <FL/FL_Text_Display.H>
-#include <FL/FL_Choice.H>
-#include <FL/FL_Menu_Item.H>
-#include <FL/Fl_Input.H>
-#include <FL/Fl_Output.H>
-#include <FL/Fl_Table.H>
-#include <cstdlib>   //for exit(0)
-#include <string.h>
-#include <vector>
+#include "SummaryCard.h"
 
 using namespace std;
 

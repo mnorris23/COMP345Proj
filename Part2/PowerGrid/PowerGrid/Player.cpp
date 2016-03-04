@@ -1,6 +1,4 @@
-#include "powergrid.h"
-#include <vector>
-#include <sstream>
+#include "Player.h"
 
 using namespace std;
 

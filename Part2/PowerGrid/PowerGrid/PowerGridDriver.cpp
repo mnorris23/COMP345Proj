@@ -1,7 +1,5 @@
-#include "powergrid.h"
-#include <FL/Fl.H>
-#include <FL/Fl_window.H>
-#include <FL/Fl_Button.H>
+#include "StartGui.h"
+
 using namespace std;
 
 

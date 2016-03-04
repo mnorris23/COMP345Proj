@@ -1,5 +1,5 @@
-#include "powergrid.h"
-#include "vector"
+#include "PlayerVector.h"
+
 using namespace std;
 
 PlayerVector::PlayerVector() : arrayPlayer(2) {
