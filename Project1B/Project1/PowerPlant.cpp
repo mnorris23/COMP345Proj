@@ -42,32 +42,40 @@ Resource Powerplant::RemoveResource(int index){
 	return res;
 }
 
-bool Powerplant::ConsumeResources() {
+std::vector<Resource> Powerplant::ConsumeResources() {
+	std::vector<Resource> res;
 	if (_resStored.size() < _resCost)//verifies that there are enough resources to be consumed
-		return false;
-	for (int i = 0; i < _resCost; i++)
+		return res;
+	for (int i = 0; i < _resCost; i++){
+		res.push_back(_resStored[_resStored.size() - 1]);
 		_resStored.pop_back(); //removes them from the resources stored
-	return true;
+	}
+	return res;
 }
 
-bool Powerplant::ConsumeResources(int type){
-	std::vector<Resource> res;
+std::vector<Resource> Powerplant::ConsumeResources(int type){
+	std::vector<Resource> res, res1;
 	for (int i = 0; i < _resStored.size(); i++){
 		if (_resStored[i].type == type){
 			res.push_back(_resStored[i]);
 			_resStored.erase(_resStored.begin() + i);
+			i--;
 		}
 	}
 	if (res.size() < _resCost){//verifies that there are enough resources to be consumed
 		for (int i = 0; i < res.size(); i++)
 			_resStored.push_back(res[i]);
-		return false;
+
+		return res1;
 	}
-	for (int i = 0; i < _resCost; i++)
+	for (int i = 0; i < _resCost; i++){
+		res1.push_back(res[_resStored.size() - 1]);
 		res.pop_back();
+	}
+		
 	for (int i = 0; i < res.size(); i++)
 		_resStored.push_back(res[i]);
-	return true;
+	return res1;
 }
 
 void Powerplant::DisplayPowerplant() {

@@ -199,14 +199,30 @@ void ResourceMarket::ReplenishMarket(int numPlayers, int step) {
 	}
 }
 
-std::vector<Resource> ResourceMarket::BuyResource(int index, int amount) {
-	std::vector<Resource> resources;
+std::vector<Resource> ResourceMarket::BuyResource(int index, int amount, int currentFunds) {
+	std::vector<Resource> resources,res1;
+	bool canBuy = true;
 	while (amount > 0){
 		resources.push_back(_resourcesInMarket[index].top());
 		_resourcesInMarket[index].pop();
 		amount--;
 	}
-	return resources;
+	for (int i = 0; i < resources.size(); i++){
+		currentFunds -= resources[i].cost;
+		if (currentFunds < 0){
+			canBuy = false;
+			break;
+		}
+	}
+	if (canBuy == true)
+		return resources;
+	else{
+		for (int i = 0; i < resources.size(); i++){
+			_resourcesInMarket[index].push(resources[i]);
+		}
+		return res1;
+	}
+
 }
 
 int ResourceMarket::GetResourceCost(int index, int amount) {

@@ -66,9 +66,9 @@ public:
 	Resource RemoveResource(int index);
 	
 	//Consumes the amount of resources needed (if they have been previously stored on the card
-	bool ConsumeResources();
+	std::vector<Resource> ConsumeResources();
 
-	bool ConsumeResources(int type);
+	std::vector<Resource> ConsumeResources(int type);
 
 	//Displays the powerplant card.
 	void DisplayPowerplant();

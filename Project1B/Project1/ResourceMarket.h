@@ -41,7 +41,7 @@ public:
 	void ReplenishMarket(int numPlayers, int step); 
 
 	//A method to buy a certain amount of the resource at the specified index. Returns the cost of buying the specified amount of said resource, or -1 if there isn't enough of the resource
-	std::vector<Resource> BuyResource(int index, int amount);
+	std::vector<Resource> BuyResource(int index, int amount, int currentFunds);
 	
 
 	//A method to get the cost of 1 unit of the resource at the specified index, depending on the specified amount of units of the resource present in the market,
