@@ -54,13 +54,6 @@ string Player::getName() {
 	return name;
 }
 
-City* Player::getCity() {
-	return cities[0];
-}
-
-void Player::setCity(City* e) {
-	cities[numberOfCities] = e;
-}
 
 int Player::getMoney() {
 	return money;
@@ -70,28 +63,98 @@ void Player::setMoney(int a) {
 	money = money + a;
 }
 
-PowerPlant* Player::getPowerPlants() {
-	return power_plant[0];
+int Player::getNumberOfHouses() {
+	return numberOfHouses;
 }
 
-void Player::setPowerPlant(PowerPlant* plant) {
-	power_plant[numberOfPowerPlant] = plant;
+void Player::setNumberOfHouses() {
+	numberOfHouses++;
 }
 
-int Player::getNumberOfCities() {
-	return numberOfCities;
-}
-
-void Player::setNumberOfCities() {
-	numberOfCities++;
-}
-
-int Player::getNumberOfPowerPlant() {
+int Player::getNumberOfPowerPlants() {
 	return numberOfPowerPlant;
 }
 
-void Player::setNumberOfPowerPlant() {
+void Player::setNumberOfPowerPlants() {
 	numberOfPowerPlant++;
+}
+
+bool Player::RemoveHouse(int index) {
+	if (index > _houses.size() || index < 0)
+		return false;//verifies that the index is within the acceptable range for the vector
+	_houses.erase(_houses.begin() + index); //removes the house at the specified index
+	return true;
+}
+
+bool Player::SwapResource(int index1, int index2, int amount){
+	std::vector<Resource> resources;
+	for (int i = 0; i < amount; i++)
+		resources.push_back(_powerplants[index2].RemoveResource(i));
+	if (_powerplants[index1].StoreResource(resources))
+		return true;
+	else
+		_powerplants[index2].StoreResource(resources);
+
+	return false;
+}
+
+bool Player::AddResources(int index, std::vector<Resource> res) {
+	int cost = 0;
+	for (int i = 0; i < res.size(); i++)
+		cost += res[i].cost;
+
+	if (cost > _elektro || index > _powerplants.size() || index < 0)
+		return false;//verifies that the index is within the acceptable range for the vector and that the player has enough elektro to pay for the resources
+	return _powerplants[index].StoreResource(res); //tries to stores the resources in the powerplant
+
+}
+
+bool Player::AddHouse(House house, int cost){
+	if (cost > money || numberOfHouses >= 24)
+		return false;
+	else{
+		_houses[numberOfHouses] = house;
+		setNumberOfHouses();
+		return true;
+	}
+
+}
+
+bool Player::AddPowerplant(Powerplant powerplant, int cost){
+	if (cost > money )
+		return false;
+	else{
+		if (numberOfPowerPlants == 3){
+			_powerplants[numberOfPowerPlants - 1] = powerplant;
+		}
+		else{
+			_powerplants[numberOfPowerPlants] = powerplant;
+			setNumberOfPowerPlants();
+		}
+		
+		return true;
+	}
+
+}
+
+void Player::DisplayPlayer() {
+	////Displays the specific information about the player
+	cout << "Player " << _color <<
+		"\nElektros: " << _elektro <<
+		"\n\nCurrent number of houses: " << numberOfHouses <<
+		"\nCurrent number of powerplants: " << numberOfPowerPlants << endl;
+	//displays the specific information about the player's houses
+	cout << "Locations in which player has houses:" << endl;
+
+	for (int i = 0; i < _houses.size(); i++) {//uses a loop to iterate through all the houses
+		cout << _houses[i].location << endl;
+	}
+	//displays the specific information about the player's powerplants
+	cout << "Summary of Powerplants:" << endl;
+
+	for (int i = 0; i < _powerplants.size(); i++) {//uses a loop to iterate through all the powerplants
+		_powerplants[i].DisplayPowerplant();//calls the display method of the powerplant
+	}
 }
 
 string Player::getPlayerInformation() {
