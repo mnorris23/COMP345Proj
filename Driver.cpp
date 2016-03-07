@@ -30,10 +30,13 @@ vector<Player> newGame() { // asks the users how many players will be playing th
 	return players; // returns the vector of Player objects
 }
 
-void createResourceMarket(pugi::xml_node doc) { // function parses the resource info from the xml
+vector<int> createResourceMarket(pugi::xml_node doc) { // function parses the resource info from the xml
 	pugi::xml_node resourceMarket = doc.child("resourceMarket");
-	int resourceAmount[4] = { 0, 0, 0, 0 }; // coal, oil, garbage, uranium
-
+	vector<int> resourceAmount; // coal, oil, garbage, uranium
+	resourceAmount.push_back(0);
+	resourceAmount.push_back(0);
+	resourceAmount.push_back(0);
+	resourceAmount.push_back(0);
 	for (pugi::xml_node currentBox = resourceMarket.child("box"); currentBox; currentBox = currentBox.next_sibling()) {
 		pugi::xml_node holding = currentBox.child("holds");
 		int coal = stoi(holding.child("coal").child_value());
@@ -45,9 +48,7 @@ void createResourceMarket(pugi::xml_node doc) { // function parses the resource 
 		resourceAmount[2] = resourceAmount[2] + garbage;
 		resourceAmount[3] = resourceAmount[3] + uranium;
 	}
-	for (int i = 0; i < 4; i++) {
-		cout << resourceAmount[i] << endl;
-	}
+	return resourceAmount;
 }
 
 int main() {
