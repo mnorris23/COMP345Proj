@@ -9,7 +9,7 @@ int Auction::bid(int bidder){
 		cin >> bid;
 		if (bid != -1 && bid <= _highestBid)
 			cout << "Your bid must be at least: " << _highestBid + 1 << endl;
-		else if (bid > *(_participants[bidder]))
+		else if (bid > (*_participants[bidder]).getMoney())
 			cout << "You cannot afford to make this bid: ";
 		else
 			return bid;
@@ -22,8 +22,8 @@ Auction::Auction(){
 
 }
 
-Auction::Auction(std::vector<int*> participants, int startingPrice){
-	_highestBid = startingPrice - 1;
+Auction::Auction(std::vector<Player*> participants, PowerPlant powerplant){
+	_highestBid = powerplant.GetValue() - 1;
 	_participants = participants;
 }
 
@@ -33,8 +33,8 @@ void Auction::run(){
 	while (_participants.size() > 1){
 		for (int i = 0; i < _participants.size(); i++){
 			
-			cout << "Player " << i + 1 << "\'s turn." << endl;
-			cout << "\n " << *_participants[i] << " and i = " << i << " current highest bid " << _highestBid << endl;
+			cout << "Player " << (*_participants[i]).getName() << "\'s turn." << endl;
+			cout << "i = " << i << " current highest bid " << _highestBid << endl;
 			int bid = this->bid(i);
 			
 			if (bid == -1){
@@ -54,8 +54,8 @@ void Auction::run(){
 	}
 
 	//if()
-	*_participants[0] -= _highestBid;
-	cout << *_participants[0];
+	(*_participants[0]).AddPowerplant(_powerplant,_highestBid);
+	
 	int j;
 	cin >> j;
 	//add powerplant to participant
