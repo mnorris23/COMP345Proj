@@ -1,61 +1,76 @@
-#pragma once
+//A class that implements the powerplant cards in the game
+#pragma once;
 
+using namespace std;
+#include <vector>;
+#include "Resource.h";
 
-/**
-This class describes a Power Plant card
-*/
-class PowerPlant {
-public:
-	/**
-	Default constructor. Not supposed to be used.
-	*/
-	PowerPlant();
-	/**
-	Default destructor
-	*/
-	~PowerPlant();
-	/**
-	The main constructor for a Power Plant
-	@param val The value of the Power Plant
-	@param consume The aumount of resources it consumes
-	@param rtype The type of resources it consumes
-	@param numCities The number of Cities it can power
-	*/
-	PowerPlant(int val, int consume, char rtype, int numCities);
-	/**
-	Method to obtain the value of a Power Plant
-	@return The value of the power plant
-	*/
-	int getValue();
-	/**
-	Method to set the value of a Power Plant
-	@param a The value of the power plant
-	*/
-	void setValue(int a);
-	/**
-	Method to obtain the type of resource the power plant consumes
-	@return A char representing the type of resource(s)
-	*/
-	char getResourceType();
-	/**
-	Method to set the type of resources of a power plant
-	@param c A char representing the type of resource(s)
-	*/
-	void setResourceType(char c);
-	/**
-	Method to get the number of cities the power plant is able to provide with energy each turn
-	@return The number of cities
-	*/
-	int getNumberOfCities();
-	/**
-	Method to set the number of cities the power plant can provide in electricity
-	@param num The number of cities
-	*/
-	void setNumberOfCities(int num);
+//A class for the powerplant cards in the game
+class PowerPlant
+{
 private:
-	int value; 				///<The value of the power plant
-	char type;				///<The type of resources the power plant consumes
-	int consumption;		///<The amount of resources the power plant consumes
-	int numberOfResources;	///<The number of resources it currently has
-	int numberOfCities;		///<The number of cities it can provide in energy
+	//initial value
+	int _value;
+	//the maximum amount of cities it can power
+	int _maxCitiesPowered;
+	//the amount of resources it costs to run it
+	int _resCost;
+	//the current amount of cities powered by the powerplant
+	int _citiesPowered;
+	//the number of resources stored on the card.
+	std::vector<Resource> _resStored;
+	//the type(s) of resource(s) used by the powerplant. 1 is coal, 2 is oil, 3 is garbage, 4 is uranium and 5 is coal AND oil. Anything else means the powerplant doesnt use resources.
+	int _resType;
+
+	void initValues(){
+		_citiesPowered = 0;
+	}
+
+public:
+	//empty constructor
+	PowerPlant() : _value(0), _maxCitiesPowered(0), _resCost(0), _resType(0) { initValues(); }
+	//a constructor to build the card
+	PowerPlant(int value, int maxCitiesPowered, int resCost, int resType) :
+		_value(value), _maxCitiesPowered(maxCitiesPowered), _resCost(resCost), _resType(resType){
+		initValues();
+	}
+
+	//returns the value of the powerplant
+	int GetValue(){ return _value; }
+	//returns the maximum amount of cities powered
+	int GetMaxCitiesPowered(){ return _maxCitiesPowered; }
+	//returns the resource cost of the powerplant
+	int GetResCost(){ return _resCost; }
+	//returns the type of resource used by the powerplant
+	int GetResType(){ return _resType; }
+	int GetAmountStored(){ return _resStored.size(); }
+	Resource* GetResStoredAt(int index){ return &_resStored[index]; }
+
+
+
+	//returns the available space for resources
+	//The total available space is the amount in resource cost *2 minus the resources already stored
+	int GetStorageSpace() {	return _resCost * 2 - _resStored.size(); }
+
+
+
+	//adds a number of cities to be powered by the powerplant 
+	bool AddCities(int cities);
+
+	//removes a number of cities being powered
+	bool RemoveCities(int cities);
+
+	//Stores an amount of resources of a certain type on the card
+	bool StoreResource(std::vector<Resource> resources);
+
+	Resource RemoveResource(int index);
+	
+	//Consumes the amount of resources needed (if they have been previously stored on the card
+	std::vector<Resource> ConsumeResources();
+
+	std::vector<Resource> ConsumeResources(int type);
+
+	//Displays the powerplant card.
+	void DisplayPowerplant();
+
 };

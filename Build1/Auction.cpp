@@ -60,21 +60,3 @@ void Auction::run(){
 	cin >> j;
 	//add powerplant to participant
 }
-
-void main(){
-	std::vector < int* >  ints;
-
-	int i1 = 100;
-	int *int1 = &i1;
-	int i2 = 200;
-	int *int2 = &i2;
-	int i3 = 300;
-	int *int3 = &i3;
-
-	ints.push_back(int1);
-	ints.push_back(int2);
-	ints.push_back(int3);
-
-	Auction auction(ints, 10);
-	auction.run();
-}

@@ -100,13 +100,13 @@ void PaymentTable::draw_cell(TableContext context, int ROW, int COL, int X, int 
 		return;
 	case CONTEXT_COL_HEADER:
 		if ((COL % 2) == 0)
-			snprintf(s, 40, "%s", "# Cities");
+			sprintf_s(s, "%s", "# Cities");
 		else
-			snprintf(s, 40, "%s", "Electro");
+			sprintf_s(s, "%s", "Electro");
 		DrawHeader(s, X, Y, W, H);
 		return;
 	case CONTEXT_CELL:
-		snprintf(s, 40, "%d", data[ROW][COL]);
+		sprintf_s(s, "%d", data[ROW][COL]);
 		DrawData(s, X, Y, W, H);
 		return;
 	default:

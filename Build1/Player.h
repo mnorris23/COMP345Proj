@@ -57,7 +57,7 @@ public:
 	bool AddHouse(House house, int cost);
 
 	//A method to add a powerplant to the player's possessions
-	bool AddPowerplant(PowerPlant* powerplant, int cost);
+	bool AddPowerplant(PowerPlant powerplant, int cost);
 
 	//Returns a pointer to a house owned by the player
 	House* GetHouse(int index){ return &(_houses[index]); }
@@ -65,8 +65,6 @@ public:
 	//Returns a pointer to a powerplant owned by the player
 	PowerPlant* GetPowerplant(int index){ return &(_powerplants[index]); }
 
-	//A method to remove a house from the player's possessions
-	bool RemoveHouse(int index);
 
 	bool SwapResource(int index1, int index2, int amount);
 
@@ -112,9 +110,9 @@ public:
 
 private:
 	//An array containing the houses owned by the player
-	House* _houses[24];
+	House _houses[24];
 	//An array containing the powerplants owned by the player
-	PowerPlant* _powerplants[3];
+	PowerPlant _powerplants[3];
 
 	std::string color; 		///< The color of the player
 	std::string name;		///< The name of the player

@@ -79,12 +79,6 @@ void Player::setNumberOfPowerPlants() {
 	numberOfPowerPlant++;
 }
 
-bool Player::RemoveHouse(int index) {
-	if (index > _houses.size() || index < 0)
-		return false;//verifies that the index is within the acceptable range for the vector
-	_houses.erase(_houses.begin() + index); //removes the house at the specified index
-	return true;
-}
 
 bool Player::SwapResource(int index1, int index2, int amount){
 	std::vector<Resource> resources;
@@ -103,7 +97,7 @@ bool Player::AddResources(int index, std::vector<Resource> res) {
 	for (int i = 0; i < res.size(); i++)
 		cost += res[i].cost;
 
-	if (cost > _elektro || index > _powerplants.size() || index < 0)
+	if (cost > money || index > 2 || index < 0)
 		return false;//verifies that the index is within the acceptable range for the vector and that the player has enough elektro to pay for the resources
 	return _powerplants[index].StoreResource(res); //tries to stores the resources in the powerplant
 
@@ -120,7 +114,7 @@ bool Player::AddHouse(House house, int cost){
 
 }
 
-bool Player::AddPowerplant(PowerPlant* powerplant, int cost){
+bool Player::AddPowerplant(PowerPlant powerplant, int cost){
 	if (cost > money )
 		return false;
 	else{
