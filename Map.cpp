@@ -110,6 +110,10 @@ void Map::saveMap(vector<Player> players, pugi::xml_node node) {
 		string playerName = (*it).getPname();
 		string playerColor = (*it).getColor();
 		string elektros = to_string((*it).getElektros());
+		
+		//vector<House> house = (*it).getHouses();
+		//int numberOfHouses = (*it).getNumbOfHouses();
+		//for (pugi::xml_node houseNode = player.child("houses"); houseNode; houseNode = house
 
 		const char* pN = playerName.c_str();
 		const char* pC = playerColor.c_str();

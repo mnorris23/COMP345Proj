@@ -1316,23 +1316,44 @@
 			<name></name>
 			<color></color>
 			<elektros></elektros>
-			<houses></houses>
+			<houses>
+				<location></location>
+			</houses>
 			<powerPlants>
-				<powerPlant></powerPlant>
-				<powerPlant></powerPlant>
-				<powerPlant></powerPlant>
-				
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
 			</powerPlants>
 		</player>
 		<player>
 			<name></name>
 			<color></color>
 			<elektros></elektros>
-			<houses></houses>
+			<houses>
+				<location></location>
+			</houses>
 			<powerPlants>
-				<powerPlant></powerPlant>
-				<powerPlant></powerPlant>
-				<powerPlant></powerPlant>
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
+				<powerPlant>
+					<value></value>
+					<resources></resources>
+				</powerPlant>
 			</powerPlants>
 		</player>
 	</players>
@@ -1568,4 +1589,10 @@
 			</holds>
 		</box>
 	</resourceMarket>
+	<resourceSupply>
+		<coal>0</coal>
+		<oil>6</oil>
+		<garbage>18</garbage>
+		<uranium>10</uranium>
+	</resourceSupply>
 </powergrid>
