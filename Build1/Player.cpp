@@ -7,7 +7,7 @@ Player::Player(string aname, int acolor) {
 	name = aname;
 	money = 50;
 	numberOfPowerPlant = 0;
-	numberOfCities = 0;
+	numberOfHouses = 0;
 	summaryCard = new SummaryCard();
 	switch (acolor) {
 		case 0: color = "red"; break;
@@ -19,7 +19,7 @@ Player::Player(string aname, int acolor) {
 	}
 }
 
-Player::Player(string aname) : name(aname), color("orange"), money(50), numberOfPowerPlant(0), numberOfCities(0) {
+Player::Player(string aname) : name(aname), color("orange"), money(50), numberOfPowerPlant(0), numberOfHouses(0) {
 
 }
 
@@ -28,7 +28,7 @@ Player::Player() {
 	color = "blue";
 	money = 50;
 	numberOfPowerPlant = 0;
-	numberOfCities = 0;
+	numberOfHouses = 0;
 }
 
 
@@ -120,15 +120,15 @@ bool Player::AddHouse(House house, int cost){
 
 }
 
-bool Player::AddPowerplant(Powerplant powerplant, int cost){
+bool Player::AddPowerplant(PowerPlant* powerplant, int cost){
 	if (cost > money )
 		return false;
 	else{
-		if (numberOfPowerPlants == 3){
-			_powerplants[numberOfPowerPlants - 1] = powerplant;
+		if (numberOfPowerPlant == 3){
+			_powerplants[numberOfPowerPlant - 1] = powerplant;
 		}
 		else{
-			_powerplants[numberOfPowerPlants] = powerplant;
+			_powerplants[numberOfPowerPlant] = powerplant;
 			setNumberOfPowerPlants();
 		}
 		
@@ -136,7 +136,7 @@ bool Player::AddPowerplant(Powerplant powerplant, int cost){
 	}
 
 }
-
+/*
 void Player::DisplayPlayer() {
 	////Displays the specific information about the player
 	cout << "Player " << _color <<
@@ -152,21 +152,21 @@ void Player::DisplayPlayer() {
 	//displays the specific information about the player's powerplants
 	cout << "Summary of Powerplants:" << endl;
 
-	for (int i = 0; i < _powerplants.size(); i++) {//uses a loop to iterate through all the powerplants
+	for (int i = 0; i < 3; i++) {//uses a loop to iterate through all the powerplants
 		_powerplants[i].DisplayPowerplant();//calls the display method of the powerplant
 	}
-}
+}*/
 
 string Player::getPlayerInformation() {
 	
 	ostringstream info;
-	info << "Player Name: " << name <<  "\nNumber Of Cities: " << numberOfCities << "\nNumber Of PowerPlant: " << numberOfCities << "\nElectro: " << money << endl;
+	info << "Player Name: " << name <<  "\nNumber Of Cities: " << numberOfHouses << "\nNumber Of PowerPlant: " << numberOfPowerPlant << "\nElectro: " << money << endl;
 	string str = info.str();
 	return str;
 }
 
 string Player::getPayment() {
-	string payment = summaryCard->payment(this->getName(), this->getNumberOfCities());
+	string payment = summaryCard->payment(this->getName(), this->getNumberOfHouses());
 	return payment;
 }
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "City.h"
+#include "House.h"
+#include "Resource.h"
 #include "PowerPlant.h"
 #include "SummaryCard.h"
 #include <string>
@@ -55,13 +57,13 @@ public:
 	bool AddHouse(House house, int cost);
 
 	//A method to add a powerplant to the player's possessions
-	bool AddPowerplant(Powerplant powerplant, int cost);
+	bool AddPowerplant(PowerPlant* powerplant, int cost);
 
 	//Returns a pointer to a house owned by the player
 	House* GetHouse(int index){ return &(_houses[index]); }
 
 	//Returns a pointer to a powerplant owned by the player
-	Powerplant* GetPowerplant(int index){ return &(_powerplants[index]); }
+	PowerPlant* GetPowerplant(int index){ return &(_powerplants[index]); }
 
 	//A method to remove a house from the player's possessions
 	bool RemoveHouse(int index);
@@ -110,9 +112,9 @@ public:
 
 private:
 	//An array containing the houses owned by the player
-	House _houses[24];
+	House* _houses[24];
 	//An array containing the powerplants owned by the player
-	Powerplant _powerplants[3];
+	PowerPlant* _powerplants[3];
 
 	std::string color; 		///< The color of the player
 	std::string name;		///< The name of the player
