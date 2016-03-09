@@ -1,5 +1,5 @@
 //A struct that implements the houses in the game
-#pragma once;
+#pragma once
 using namespace std;
 #include <string>;
 //A struct used to symbolize the houses in the game

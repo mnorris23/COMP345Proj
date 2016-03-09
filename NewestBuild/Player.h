@@ -65,10 +65,10 @@ public:
 	bool AddPowerplant(PowerPlant powerplant, int cost);
 
 	//Returns a pointer to a house owned by the player
-	House* GetHouse(int index){ return &(_houses[index]); }
+	House* GetHouse(int index);
 
 	//Returns a pointer to a powerplant owned by the player
-	PowerPlant* GetPowerplant(int index){ return &(_powerplants[index]); }
+	PowerPlant* GetPowerplant(int index);
 
 
 	bool SwapResource(int index1, int index2, int amount);
@@ -109,9 +109,9 @@ public:
 	@return The name of the player, the number of cities he owns, the money he has, the power plant he owns
 	*/
 	std::string getPlayerInformation();
-
+	//Method to get how much the player is to be payed
 	std::string getPayment();
-
+	//Method to get the highest value out of the player's powerplants.
 	int getMaxValuePowerplant();
 
 
@@ -129,5 +129,5 @@ private:
 	int numberOfHouses;			///< The number of cities the player owns
 	int numberOfPowerPlant;		///< The number of power plant the player owns
 
-	SummaryCard* summaryCard;
+	SummaryCard* summaryCard; //A pointer to the summary card for the player
 };

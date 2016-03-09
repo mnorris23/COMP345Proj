@@ -1,8 +1,8 @@
 //A class that implements the Resource Market in the game
-#pragma once;
-#include "Resource.h";
-#include <stack>;
-#include <vector>;
+#pragma once
+#include "Resource.h"
+#include <stack>
+#include <vector>
 
 using namespace std;
 //A class to regulate the Resource Market in the game
@@ -18,25 +18,20 @@ private:
 	//The amount of resources in reserve (not in the market or stored in a powerplant)
 	std::stack<Resource> _resourcesInReserve[4];
 	//The maximum amount of a resource that can be found in the game
-	int _maxAmountOfResources[4] /*= { 24, 24, 24, 12 }*/;
+	int _maxAmountOfResources[4];
 
 	//a method that sets the value for the reserve of each resources, only called at the beginning of the game
 	void establishResourceReserves(int coalAmount, int oilAmount, int garbageAmount, int uraniumAmount);
-
+	//A private method to initialize the arrays used by the class
 	void initializeArrays();
 
 public:
 
 	//empty constructor, the market starts empty
-	ResourceMarket()
-	{
-		establishResourceReserves(0, 0, 0, 0);
-	}
+	ResourceMarket();
 	//constructor that initializes the market with a certain amount of resources available
-	ResourceMarket(int coal, int oil, int garbage, int uranium)
-	{
-		establishResourceReserves(coal, oil, garbage, uranium);
-	}
+	ResourceMarket(int coal, int oil, int garbage, int uranium);
+	
 	//a method to replenish the market with a certain amount of resources each turn. The amount of resources depends on the number of players and the stage of the game.
 	void ReplenishMarket(int numPlayers, int step);
 
@@ -49,13 +44,13 @@ public:
 	int GetResourceCost(int index, int amount);
 
 	//A Getter method for the resources (the amount available in the market)
-	int GetResourceInMarket(int index) { if (index >= 0 || index <= 3) return _resourcesInMarket[index].size(); else return -1; }
+	int GetResourceInMarket(int index);
 
 	//A Getter method for the resources in reserve
-	int GetResourcesInReserve(int index) { if (index >= 0 || index <= 3) return _resourcesInReserve[index].size(); else return -1; }
+	int GetResourcesInReserve(int index);
 
 	//Getter methods for the maximum amount of a given resource
-	int GetTotalResources(int index) { if (index >= 0 || index <= 3) return _maxAmountOfResources[index]; else return -1; }
+	int GetTotalResources(int index);
 
 	//A method to recover resources that have been bought, once they have been consumed. Said resources are stored until they can be used to replenish the market
 	bool RestoreResources(int index, std::vector<Resource> resources);

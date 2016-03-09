@@ -1,9 +1,52 @@
+
+#include <iostream>
+#include <string>
+#include "PowerPlant.h"
+
 using namespace std;
-#include <iostream>;
-#include <string>;
-#include <vector>;
-#include "Resource.h";
-#include "PowerPlant.h";
+
+PowerPlant::PowerPlant() : _value(0), _maxCitiesPowered(0), _resCost(0), _resType(0) {
+	initValues(); 
+}
+
+PowerPlant::PowerPlant(int value, int maxCitiesPowered, int resCost, int resType) :
+_value(value), _maxCitiesPowered(maxCitiesPowered), _resCost(resCost), _resType(resType){
+	initValues();
+}
+
+int PowerPlant::GetValue(){ 
+	return _value; 
+}
+
+int PowerPlant::GetMaxCitiesPowered(){
+	return _maxCitiesPowered;
+}
+
+int PowerPlant::GetResCost(){
+	return _resCost; 
+}
+
+int PowerPlant::GetResType(){ 
+	return _resType; 
+}
+
+int PowerPlant::GetAmountStored(){ 
+	return _resStored.size(); 
+}
+
+Resource* PowerPlant::GetResStoredAt(int index){ 
+	return &_resStored[index]; 
+}
+
+int  PowerPlant::GetStorageSpace() {
+	return _resCost * 2 - _resStored.size();
+}
+
+void PowerPlant::initValues(){
+	//initializes cities powered
+	_citiesPowered = 0;
+}
+
 
 bool PowerPlant::AddCities(int cities) {
 	//verifies that the amount of cities being powered doesn't exceed the maximum
@@ -39,13 +82,14 @@ bool PowerPlant::StoreResource(std::vector<Resource> resources) {
 Resource PowerPlant::RemoveResource(int index){
 	Resource res = _resStored[index];
 	_resStored.erase(_resStored.begin() + index);
+	//Removes the resource at specified index and returns it.
 	return res;
 }
 
 std::vector<Resource> PowerPlant::ConsumeResources() {
 	std::vector<Resource> res;
 	if (_resStored.size() < _resCost)//verifies that there are enough resources to be consumed
-		return res;
+		return res;//if not return empty vector
 	for (int i = 0; i < _resCost; i++){
 		res.push_back(_resStored[_resStored.size() - 1]);
 		_resStored.pop_back(); //removes them from the resources stored
@@ -56,26 +100,26 @@ std::vector<Resource> PowerPlant::ConsumeResources() {
 std::vector<Resource> PowerPlant::ConsumeResources(int type){
 	std::vector<Resource> res, res1;
 	for (int i = 0; i < _resStored.size(); i++){
-		if (_resStored[i].type == type){
+		if (_resStored[i].type == type){//puts all of the resources of the type in a temp vector
 			res.push_back(_resStored[i]);
 			_resStored.erase(_resStored.begin() + i);
-			i--;
 		}
 	}
 	if (res.size() < _resCost){//verifies that there are enough resources to be consumed
 		for (int i = 0; i < res.size(); i++)
 			_resStored.push_back(res[i]);
 
-		return res1;
+		return res1;//if not, returns empty vector
 	}
+	
 	for (int i = 0; i < _resCost; i++){
 		res1.push_back(res[_resStored.size() - 1]);
-		res.pop_back();
+		res.pop_back();//removes them from the resources stored
 	}
 
 	for (int i = 0; i < res.size(); i++)
-		_resStored.push_back(res[i]);
-	return res1;
+		_resStored.push_back(res[i]);//pushes back the remaining resources
+	return res1;//returns the resources consumed
 }
 
 void PowerPlant::DisplayPowerplant() {
