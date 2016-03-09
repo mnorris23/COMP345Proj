@@ -3,18 +3,52 @@
 using namespace std;
 
 MapObserver::MapObserver() {
+
+}
+
+MapObserver::MapObserver(Map brazil) {
+	
+
 	map = new Fl_Group(0, 0, 885, 825, "MAP");
 	map->begin();
+
 	map->box(FL_GTK_UP_FRAME);
 	map->color(FL_BLACK);
 	map->labelsize(46);
 	map->align(Fl_Align(FL_ALIGN_TOP | FL_ALIGN_INSIDE));
 
+	vector<Map::City> cities = brazil.getCities();
+
+	for (vector<Map::City>::iterator it = cities.begin(); it != cities.end(); it++) {
+		string cityName = (*it).getCityName();
+		const char* cN= cityName.c_str();
+		int x = (*it).getX();
+		int y = (*it).getY();
+		string color1 = (*it).getColor();
+		int color = 12;
+
+		if (color1 == "red") color = 193;
+		else if (color1 == "green") color = 62;
+		else if (color1 == "blue") color = 6;
+		else if (color1 == "yellow") color = 3;
+		else if (color1 == "pink") color = 5;
+		else if (color1 == "orange") color = 11;
+
+		Fl_Group* city = new Fl_Group(x, y, 85, 21, cN);
+		city->begin();
+		city->box(FL_UP_BOX);
+		city->color((Fl_Color)color);
+		boavista1 = new Fl_Button(x + 10, y + 1, 20, 20, "10");
+		Fl_Button* boavista2 = new Fl_Button(x + 31, y + 1, 20, 20, "15");
+		Fl_Button* boavista3 = new Fl_Button(x + 51, y + 1, 20, 20, "20");
+		city->end();
+	}
+	/*
     Fl_Group* boavista = new Fl_Group(55, 28, 85, 21, "Boa Vista");
     boavista->begin();
       	boavista->box(FL_UP_BOX);
       	boavista->color((Fl_Color)3);
-      	Fl_Button* boavista1 = new Fl_Button(65, 29, 20, 20, "10");
+      	boavista1 = new Fl_Button(65, 29, 20, 20, "10");
     	Fl_Button* boavista2 = new Fl_Button(86, 29, 20, 20, "15");
       	Fl_Button* boavista3 = new Fl_Button(106, 29, 20, 20, "20");
     boavista->end();
@@ -388,11 +422,34 @@ MapObserver::MapObserver() {
       Fl_Button* parnaiba2 = new Fl_Button(536, 69, 20, 20, "15");
       Fl_Button* parnaiba3 = new Fl_Button(556, 69, 20, 20, "20");
     parnaiba->end();
+	*/
+	//boavista1->callback((Fl_Callback*)city_cb, "boavista1");
+	//boavista2->callback((Fl_Callback*)city_cb);
+	//boavista3->callback((Fl_Callback*)city_cb);
+
+	buff = new Fl_Text_Buffer();
+	sometext = new Fl_Text_Display(518, 385, 310, 50);
+	sometext->buffer(buff);
 
 	map->end(); // Fl_Group* map
+
+	
 }
 
 MapObserver::~MapObserver() {
+
+}
+
+void MapObserver::city_cb(Fl_Widget* w, void * v) {
+	((MapObserver*)(w->parent()->user_data()))->city_cb_i(w, v);
+}
+
+void MapObserver::city_cb_i(Fl_Widget* w, void * v) {
+	Fl_Button* button = (Fl_Button*)w;
+	const char * label = (const char *) v;
+	
+	displayCityInfo(label);
+	
 
 }
 
@@ -402,4 +459,10 @@ void MapObserver::hide() {
 
 void MapObserver::show() {
 	map->show();
+}
+
+void MapObserver::displayCityInfo(const char * label1) {
+	buff = this->buff;
+	buff->text(label1);
+	
 }

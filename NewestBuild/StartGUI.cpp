@@ -67,7 +67,7 @@ StartGUI::StartGUI() {
 
 	playerinfo = new PlayerObserver();
 
-	map = new MapObserver();
+	//map = new MapObserver();
 
 	resources = new ResourcesMarketObserver();
 
@@ -75,14 +75,29 @@ StartGUI::StartGUI() {
 
 	summary = new SummaryCardObserver();
 
-	
+	Map brazil;
+	pugi::xml_document document;
+	pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
+
+	//load_file_button->hide();
+
+	if (result) { // checking if the document was parsed properly
+		cout << "XML [" << "map.xml" << "] parsed without errors. \n";
+		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+
+	}
+	else {
+		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
+	}
+
+	map = new MapObserver(brazil);
 	
 	playerinfo->hide();
-	map->hide();
+	
 	resources->hide();
 	powerplant->hide();
 	summary->hide();
-
+	map->hide();
 	mainWindow->end();
 	mainWindow->show();
 }
@@ -190,7 +205,24 @@ void StartGUI::waitToStart() {
 	player2 = Player(getSecondPlayerName(), getSecondPlayerColor());
 	playerlist.setPlayer(player1, 0);
 	playerlist.setPlayer(player2, 1);
-		
+	/*
+	Map brazil;
+	pugi::xml_document document;
+	pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
+
+	//load_file_button->hide();
+
+	if (result) { // checking if the document was parsed properly
+		cout << "XML [" << "map.xml" << "] parsed without errors. \n";
+		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+
+	}
+	else {
+		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
+	}
+
+	map = new MapObserver(brazil);
+	*/
 	start->hide();
 	first_player_name->hide();
 	second_player_name->hide();
@@ -391,16 +423,18 @@ void StartGUI::loadToStart() {
 	else {
 		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
 	}
+
+	map = new MapObserver(brazil);
 	
-	vector<PowerPlant> pPlants = buildPowerplants();
-	vector<Player> players = loadPlayers(document.child("powergrid"), pPlants); // loading player into and possessions from xml file into a vector of players
+	//vector<PowerPlant> pPlants = buildPowerplants();
+	//vector<Player> players = loadPlayers(document.child("powergrid"), pPlants); // loading player into and possessions from xml file into a vector of players
 
-	vector<int> rM = createResourceMarket(document.child("powergrid")); 
-	ResourceMarket resourceMarket(rM[0], rM[1], rM[2], rM[3]);
+	//vector<int> rM = createResourceMarket(document.child("powergrid")); 
+	//ResourceMarket resourceMarket(rM[0], rM[1], rM[2], rM[3]);
 
-	vector<int> resourceSupply = createResourceSupply(document.child("powergrid")); // creating the resource supply
+	//vector<int> resourceSupply = createResourceSupply(document.child("powergrid")); // creating the resource supply
 
-	vector<PowerPlant> availablePPlants = availablePowerPlants(document.child("powergrid"), pPlants); // creating a vector of avaliable power plants in deck
+	//vector<PowerPlant> availablePPlants = availablePowerPlants(document.child("powergrid"), pPlants); // creating a vector of avaliable power plants in deck
 }
 
 vector<Player> playerOrder(vector<Player> players) {
