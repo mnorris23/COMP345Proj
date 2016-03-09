@@ -26,16 +26,8 @@ void GameDriver::playTurn(){
 	//Determine player order
 	//Temp vector of players
 	std::vector<Player> playersInOrder;
-	//If the first player has more houses
-	/*if (players[0].getNumberOfHouses() < players[1].getNumberOfHouses()){
-
-	}if the second player has more houses
-	else if (players[0].getNumberOfHouses() > players[1].getNumberOfHouses()){
-
-	}//if they have the same amount of houses
-	else{
-
-	}*/
+	playersInOrder = playerOrder(players);
+	
 	//Auction PowerPlants
 
 	//Buy Resources
@@ -44,3 +36,38 @@ void GameDriver::playTurn(){
 
 
 }  
+
+/**
+Determine player order in the beginning of every turn based on first how many houses 
+owned by the player. If there is a tie then we check the powerplant with the 
+max value.
+@return descending order vector<player>
+*/
+
+vector<Player> GameDriver::playerOrder(vector<Player> players) {
+
+	Player temp;
+	for (int i = 0; i < players.size(); i++) {
+		for (int j = players.size() - 1; j > i; j--) {
+			if (players[j].getNumberOfHouses() > players[j - 1].getNumberOfHouses()) {
+				temp = players[j - 1];
+				players[j - 1] = players[j];
+				players[j] = temp;
+			}
+		}
+	}
+
+	for (int i = 0; i < players.size(); i++) {
+		for (int j = players.size() - 1; j > i; j--) {
+			if (players[j].getNumberOfHouses() == players[j - 1].getNumberOfHouses()) {
+				if (players[j].getMaxValuePowerplant() > players[j - 1].getMaxValuePowerplant()) {
+					temp = players[j - 1];
+					players[j - 1] = players[j];
+					players[j] = temp;
+				}
+			}
+
+		}
+	}
+	return players;
+}

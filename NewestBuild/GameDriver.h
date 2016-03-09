@@ -34,4 +34,5 @@ public:
 	void initGame();
 	//Method that runs through a turn of the game
 	void playTurn();
+	vector<Player> playerOrder(vector<Player> players);
 };   

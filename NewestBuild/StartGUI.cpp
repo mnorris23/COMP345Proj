@@ -4,7 +4,7 @@ using namespace std;
 
 
 StartGUI::StartGUI() {
-	mainWindow = new Fl_Window(1347, 881, "PowerGrid Board Game");
+	mainWindow = new Fl_Window(1680,988, "PowerGrid Board Game");
 	mainWindow->user_data((void*)(this));
 	mainWindow->begin();
 	buff = new Fl_Text_Buffer();
@@ -22,13 +22,6 @@ StartGUI::StartGUI() {
 
 	newb->callback((Fl_Callback*)newb_cb);
 
-	
-
-	//buff->text("PowerGrid Board Game\n Select # of players.");
-	
-	//twoplayers = new Fl_Button(586, 460, 175, 65, "2 Players");
-
-	//twoplayers->callback((Fl_Callback*)twoplayers_cb);
 
 
 	start = new Fl_Button(590, 505, 175, 65, "Start");
@@ -67,8 +60,6 @@ StartGUI::StartGUI() {
 
 	playerinfo = new PlayerObserver();
 
-	//map = new MapObserver();
-
 	resources = new ResourcesMarketObserver();
 
 	powerplant = new PowerPlantObserver();
@@ -106,11 +97,6 @@ StartGUI::~StartGUI() {
 
 }
 
-/*
-void StartGUI::twoplayers_cb(Fl_Widget* w, void* v) {
-	((StartGUI*)(w->parent()->user_data()))->twoplayers_cb_i(w, v);
-}
-*/
 
 void StartGUI::load_cb(Fl_Widget* w, void* v) {
 	((StartGUI*)(w->parent()->user_data()))->load_cb_i(w, v);
@@ -124,23 +110,11 @@ void StartGUI::newb_cb(Fl_Widget* w, void* v) {
 void StartGUI::load_file_button_cb(Fl_Widget* w, void* v) {
 	((StartGUI*)(w->parent()->user_data()))->load_file_button_cb_i(w, v);
 }
-/*
-void StartGUI::twoplayers_cb_i(Fl_Widget* , void* )
-{
-	welcome->hide();
-	//twoplayers->hide();
-	start->show();
-	first_player_name->show();
-	second_player_name->show();
-	first_player_color->show();
-	second_player_color->show();	
-}
-*/
+
 
 void StartGUI::load_cb_i(Fl_Widget*, void*)
 {
 	welcome->hide();
-	//twoplayers->hide();
 	load->hide();
 	newb->hide();
 	load_file->show();
@@ -150,7 +124,6 @@ void StartGUI::load_cb_i(Fl_Widget*, void*)
 void StartGUI::newb_cb_i(Fl_Widget*, void*)
 {
 	welcome->hide();
-	//twoplayers->hide();
 	load->hide();
 	newb->hide();
 	start->show();
@@ -205,24 +178,7 @@ void StartGUI::waitToStart() {
 	player2 = Player(getSecondPlayerName(), getSecondPlayerColor());
 	playerlist.setPlayer(player1, 0);
 	playerlist.setPlayer(player2, 1);
-	/*
-	Map brazil;
-	pugi::xml_document document;
-	pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
-
-	//load_file_button->hide();
-
-	if (result) { // checking if the document was parsed properly
-		cout << "XML [" << "map.xml" << "] parsed without errors. \n";
-		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
-
-	}
-	else {
-		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
-	}
-
-	map = new MapObserver(brazil);
-	*/
+	
 	start->hide();
 	first_player_name->hide();
 	second_player_name->hide();
@@ -269,81 +225,7 @@ vector<int> createResourceSupply(pugi::xml_node doc) { // function parses the re
 	return resourceSupply;
 }
 
-vector<PowerPlant> buildPowerplants() {
 
-	vector<PowerPlant> powerplants;
-
-
-	// These are no being used just filler objects
-	powerplants[0] = PowerPlant(0, 0, 0, 0);
-	powerplants[1] = PowerPlant(0, 0, 0, 0);
-	powerplants[2] = PowerPlant(0, 0, 0, 0);
-	powerplants[41] = PowerPlant(0, 0, 0, 0);
-	powerplants[43] = PowerPlant(0, 0, 0, 0);
-	powerplants[45] = PowerPlant(0, 0, 0, 0);
-	powerplants[47] = PowerPlant(0, 0, 0, 0);
-	powerplants[48] = PowerPlant(0, 0, 0, 0);
-	powerplants[49] = PowerPlant(0, 0, 0, 0);
-
-	//Powerplant(int value, int maxCitiesPowered, int resCost, int resType) 
-	// -1 for resType represents eco powerplants
-	powerplants[3] = PowerPlant(3, 1, 2, 1);
-	powerplants[4] = PowerPlant(4, 1, 2, 0);
-	powerplants[5] = PowerPlant(5, 1, 2, 4);
-	powerplants[6] = PowerPlant(6, 1, 1, 2);
-
-	powerplants[7] = PowerPlant(7, 2, 3, 1);
-	powerplants[8] = PowerPlant(8, 2, 3, 0);
-	powerplants[9] = PowerPlant(9, 1, 1, 1);
-	powerplants[10] = PowerPlant(10, 2, 2, 0);
-
-	powerplants[11] = PowerPlant(11, 2, 1, 3);
-	powerplants[12] = PowerPlant(12, 2, 2, 4);
-	powerplants[13] = PowerPlant(13, 1, 0, -1);
-	powerplants[14] = PowerPlant(14, 2, 2, 2);
-
-	powerplants[15] = PowerPlant(15, 3, 2, 0);
-	powerplants[16] = PowerPlant(16, 3, 2, 1);
-	powerplants[17] = PowerPlant(17, 2, 1, 3);
-	powerplants[18] = PowerPlant(18, 2, 0, -1);
-
-	powerplants[19] = PowerPlant(19, 3, 2, 2);
-	powerplants[20] = PowerPlant(20, 5, 3, 0);
-	powerplants[21] = PowerPlant(21, 4, 2, 4);
-	powerplants[22] = PowerPlant(22, 2, 0, -1);
-
-	powerplants[23] = PowerPlant(23, 3, 1, 3);
-	powerplants[24] = PowerPlant(24, 4, 2, 2);
-	powerplants[25] = PowerPlant(25, 5, 2, 0);
-	powerplants[26] = PowerPlant(26, 5, 2, 1);
-
-	powerplants[27] = PowerPlant(27, 3, 0, -1);
-	powerplants[28] = PowerPlant(28, 4, 1, 3);
-	powerplants[29] = PowerPlant(29, 4, 1, 4);
-	powerplants[30] = PowerPlant(30, 6, 3, 2);
-
-	powerplants[31] = PowerPlant(31, 6, 3, 0);
-	powerplants[32] = PowerPlant(32, 6, 3, 1);
-	powerplants[33] = PowerPlant(33, 4, 0, -1);
-	powerplants[34] = PowerPlant(34, 5, 1, 3);
-
-	powerplants[35] = PowerPlant(35, 5, 1, 1);
-	powerplants[36] = PowerPlant(36, 7, 3, 0);
-	powerplants[37] = PowerPlant(37, 4, 0, -1);
-	powerplants[38] = PowerPlant(38, 7, 3, 2);
-
-	powerplants[39] = PowerPlant(39, 6, 1, 3);
-	powerplants[40] = PowerPlant(40, 6, 2, 1);
-
-	powerplants[42] = PowerPlant(42, 6, 2, 0);
-
-	powerplants[44] = PowerPlant(44, 5, 0, -1);
-
-	powerplants[46] = PowerPlant(46, 7, 3, 4);
-	powerplants[50] = PowerPlant(50, 6, 0, -1);
-
-	return powerplants;
-}
 
 vector<PowerPlant> availablePowerPlants(pugi::xml_node doc, vector<PowerPlant> allPplants) {
 	pugi::xml_node availablePplants = doc.child("availablePowerPlants");
@@ -426,7 +308,6 @@ void StartGUI::loadToStart() {
 
 	map = new MapObserver(brazil);
 	
-	//vector<PowerPlant> pPlants = buildPowerplants();
 	//vector<Player> players = loadPlayers(document.child("powergrid"), pPlants); // loading player into and possessions from xml file into a vector of players
 
 	//vector<int> rM = createResourceMarket(document.child("powergrid")); 
@@ -437,31 +318,5 @@ void StartGUI::loadToStart() {
 	//vector<PowerPlant> availablePPlants = availablePowerPlants(document.child("powergrid"), pPlants); // creating a vector of avaliable power plants in deck
 }
 
-vector<Player> playerOrder(vector<Player> players) {
-	
-	Player temp;
-	for (int i = 0; i < players.size(); i++) {
-		for (int j = players.size() - 1; j > i; j--) {
-			if (players[j].getNumberOfHouses() > players[j - 1].getNumberOfHouses()) {
-				temp = players[j - 1];
-				players[j - 1] = players[j];
-				players[j] = temp;
-			}
-		}
-	}
 
-	for (int i = 0; i < players.size(); i++) {
-		for (int j = players.size() - 1; j > i; j--) {
-			if (players[j].getNumberOfHouses() == players[j - 1].getNumberOfHouses()) {
-				if (players[j].getMaxValuePowerplant() > players[j - 1].getMaxValuePowerplant()) {
-					temp = players[j - 1];
-					players[j - 1] = players[j];
-					players[j] = temp;
-				}
-			}
-			
-		}
-	}
-	return players;
-}
 
