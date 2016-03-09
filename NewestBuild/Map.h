@@ -15,6 +15,7 @@ class Map {
 	static int numbOfVertices;
 	std::vector<Player*> playerOrder;
 
+public:
 
 	class City {
 		std::string cityName; // the city name
@@ -65,7 +66,7 @@ class Map {
 		City* getCity() const { return city; } // accessor for the pointer to the Vertex vect
 	};
 
-public:
+
 
 	Map() {};
 	void createMap(pugi::xml_node);
@@ -73,4 +74,5 @@ public:
 	void saveMap(std::vector<Player>, pugi::xml_node);
 	int shortestDistance(std::string, std::string);
 	void DijkstraComputePaths(City, std::vector<int>&, std::vector<int>&);
+	vector<City> getCities() { return cities; }
 };
