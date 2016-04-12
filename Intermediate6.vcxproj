@@ -115,6 +115,7 @@
     <ClCompile Include="intermediate6\PowerPlantMarket_Observer.cpp" />
     <ClCompile Include="intermediate6\pugixml.cpp" />
     <ClCompile Include="intermediate6\ResourceMarket.cpp" />
+    <ClCompile Include="Intermediate6\ResourceMarket_Observer.cpp" />
     <ClCompile Include="intermediate6\SummaryCard.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -139,6 +140,7 @@
     <ClInclude Include="intermediate6\pugiconfig.hpp" />
     <ClInclude Include="intermediate6\pugixml.hpp" />
     <ClInclude Include="intermediate6\ResourceMarket.h" />
+    <ClInclude Include="Intermediate6\ResourceMarket_Observer.h" />
     <ClInclude Include="intermediate6\SummaryCard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

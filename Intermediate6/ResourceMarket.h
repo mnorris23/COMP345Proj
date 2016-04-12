@@ -1,10 +1,11 @@
 //A class that implements the Resource Market in the game
 #pragma once
 #include "GameLog_Subject.h"
+#include "Observable.h"
 
 using namespace std;
 //A class to regulate the Resource Market in the game
-class ResourceMarket
+class ResourceMarket : public Observable
 {
 private:
 	//A three-dimensional array that holds the value by which each resource is incremented after each turn, seperated by resource, stage in the game and number of players.
