@@ -4,6 +4,53 @@
 using namespace std;
 
 
+//Strategy constructors
+
+Player::Player(Strategy *initStrat){
+
+	this->strategy = initStrat;
+
+	name = "unknown";
+	color = "blue";
+	money = 50;
+	numberOfPowerPlant = 0;
+	numberOfHouses = 0;
+
+	Notify();
+};
+
+Player::Player(std::string aname, std::string acolor, int money, Strategy *initStrat){
+
+	this->strategy = initStrat;
+
+	money = 50;
+	name = aname;
+	color = acolor;
+	numberOfPowerPlant = 0;
+	numberOfHouses = 0;
+	summaryCard = new SummaryCard();
+
+	Notify();
+
+};
+
+
+//Strategy methods
+
+void Player::setStrategy(Strategy *newStrat){				//how to access player ****
+	this->strategy = newStrat;
+
+};
+
+void Player::executeStrategy(){								//how to access player ****
+
+	//execute the turn for the player with the aligned strategy
+	this->strategy->execute(this);
+
+};
+
+
+
 Player::Player(string aname, int acolor, int maxNumberOfPplants) : maxNumberOfPowerplants(maxNumberOfPplants) {
 	name = aname;
 	money = 50;
@@ -17,6 +64,8 @@ Player::Player(string aname, int acolor, int maxNumberOfPplants) : maxNumberOfPo
 	case 3: color = "blue"; break;
 	case 4: color = "pink"; break;
 	case 5: color = "orange"; break;
+
+		Notify();
 	}
 }
 
@@ -30,6 +79,8 @@ Player::Player(std::string aname, std::string acolor, int maxNumberOfPplants) : 
 	numberOfPowerPlant = 0;
 	numberOfHouses = 0;
 	summaryCard = new SummaryCard();
+
+	Notify();
 }
 
 Player::Player(std::string aname, std::string acolor, int amoney, int maxNumberOfPplants) : maxNumberOfPowerplants(maxNumberOfPplants) {
@@ -39,6 +90,8 @@ Player::Player(std::string aname, std::string acolor, int amoney, int maxNumberO
 	numberOfHouses = 0;
 	summaryCard = new SummaryCard();
 	color = acolor;
+
+	Notify();
 }
 
 Player::Player(std::string aname, int acolor, int amoney, int maxNumberOfPplants) : maxNumberOfPowerplants(maxNumberOfPplants) {
@@ -54,6 +107,8 @@ Player::Player(std::string aname, int acolor, int amoney, int maxNumberOfPplants
 	case 3: color = "blue"; break;
 	case 4: color = "pink"; break;
 	case 5: color = "orange"; break;
+
+		Notify();
 	}
 }
 
@@ -78,10 +133,14 @@ string Player::getColor() {
 
 void Player::setColor(string c) {
 	color = c;
+
+	Notify();
 }
 
 void Player::setName(string aname) {
 	name = aname;
+
+	Notify();
 }
 
 string Player::getName() {
@@ -95,6 +154,8 @@ int Player::getMoney() {
 
 void Player::setMoney(int a) {
 	money = money + a;
+
+	Notify();
 }
 
 int Player::getNumberOfHouses() {
@@ -103,6 +164,8 @@ int Player::getNumberOfHouses() {
 
 void Player::setNumberOfHouses() {
 	numberOfHouses++;
+
+	Notify();
 }
 
 int Player::getNumberOfPowerPlants() {
@@ -111,6 +174,8 @@ int Player::getNumberOfPowerPlants() {
 
 void Player::setNumberOfPowerPlants() {
 	numberOfPowerPlant++;
+
+	Notify();
 }
 
 
@@ -136,6 +201,8 @@ bool Player::AddResources(int index, int type, int amount, int totalCost) {
 			return true;
 		}
 	}
+
+	Notify();
 }
 
 bool Player::AddHouse(House house, int cost) {
@@ -149,11 +216,15 @@ bool Player::AddHouse(House house, int cost) {
 		return true;
 	}
 
+	Notify();
+
 }
 
 void Player::AddHouse(House house) { // used only for loading from file and adding a house to a player
 	_houses[numberOfHouses] = house;
 	setNumberOfHouses();
+
+	Notify();
 }
 
 bool Player::AddPowerplant(PowerPlantMarket::PowerPlant powerplant, int cost) {
@@ -173,6 +244,8 @@ bool Player::AddPowerplant(PowerPlantMarket::PowerPlant powerplant, int cost) {
 		return true;
 	}
 
+	Notify();
+
 }
 
 House* Player::GetHouse(int index) {
@@ -182,6 +255,29 @@ House* Player::GetHouse(int index) {
 PowerPlantMarket::PowerPlant* Player::GetPowerplant(int index) {
 	return &(_powerplants[index]);
 }
+
+
+void Player::displayPlayerInformation() {
+	cout << "\n-------------------------------------";
+	cout << "\nPlayer Name: " << name
+		<< "\n\tColor: " << color
+		<< "\n\tNumber Of Cities: " << numberOfHouses
+		<< "\n\tNumber Of PowerPlant: " << numberOfPowerPlant
+		<< "\n\tElectro: " << money << endl;
+
+	cout << "\nOwns houses in the following cities:" << endl;
+	for (int i = 0; i < numberOfHouses; i++) {//uses a loop to iterate through all the houses
+		cout << _houses[i].location << endl;
+	}
+	//displays the specific information about the player's powerplants
+	cout << "Summary of Powerplants:" << endl;
+
+	for (int i = 0; i < numberOfPowerPlant; i++) {//uses a loop to iterate through all the powerplants
+		DisplayPowerplant(_powerplants[i]);//calls the display method of the powerplant
+	}
+	cout << "-------------------------------------";
+}
+
 
 void Player::displayPlayerInformation(PowerPlantMarket_Observer* market_ob) {
 	cout << "\n-------------------------------------";
@@ -217,3 +313,52 @@ int Player::getMaxValuePowerplant() {
 	}
 	return maxValue;
 }
+
+
+void Player::DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant) {
+	//a string with the name of the resource being stored
+	std::string type;
+	//Setting the name according to type
+	switch (powerplant.GetResType()) {
+	case 0: type = "Coal"; break;
+	case 1: type = "Oil"; break;
+	case 2: type = "Garbage"; break;
+	case 3: type = "Uranium"; break;
+	case 4: type = "Coal and Oil"; break;
+	default: type = "None";
+	}
+	//displaying powerplant name, cities powered, max cities powered, resource needed, resource cost and resources stored
+	cout << "\nValue: " << powerplant.GetValue()
+		<< "\n\tMax Cities Powered: " << powerplant.GetMaxCitiesPowered()
+		<< "\n\tResources needed: " << type
+		<< "\n\tResource cost: " << powerplant.GetResCost()
+		<< "\n\tNumber of Resources Stored: " << powerplant.GetAmountStored() << endl;
+}
+
+
+
+
+/*											//also in ASubject.cpp
+
+void Player::Attach(Observer *o)					//stack???
+{
+	olist.push_back(o);
+}
+
+void Player::Detach(Observer *o)
+{
+	olist.erase(std::remove(olist.begin(), olist.end(), o), olist.end());
+}
+
+void Player::Notify()     //pass vars
+{
+	for (vector<Observer*>::const_iterator iter = olist.begin(); iter != olist.end(); ++iter)
+	{
+		if (*iter != 0)
+		{
+			(*iter)->Update();   //pass vars
+		}
+	}
+}
+
+*/

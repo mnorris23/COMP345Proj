@@ -1,9 +1,10 @@
 #pragma once
+#include "IObserver.h"
 
-class Observer {
+class Observer : IObserver {
 public:
 	~Observer();
-	virtual void Update() = 0;
+	virtual void Update();
 protected:
 	Observer();
 };
