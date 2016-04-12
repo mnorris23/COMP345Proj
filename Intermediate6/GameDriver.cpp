@@ -42,14 +42,17 @@ GameDriver::GameDriver() {
 }
 
 GameDriver::~GameDriver() {
-	delete powerplantmarket;
-	powerplantmarket = NULL;
+	delete mView;
+	mView = NULL;
 	delete powerplantmarket_observer;
 	powerplantmarket_observer = NULL;
-	delete gameLog;
-	gameLog = NULL;
+	delete powerplantmarket;
+	powerplantmarket = NULL;
 	delete gameLog_ob;
 	gameLog_ob = NULL;
+	delete gameLog;
+	gameLog = NULL;
+	
 }
 
 
@@ -252,8 +255,6 @@ bool GameDriver::saveGameOption(pugi::xml_document& doc) {
 		const char* gN = gameName.c_str();
 		doc.save_file(gN);
 
-		delete mView;
-		mView = NULL;
 		return true;
 	}
 	return false;

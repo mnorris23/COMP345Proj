@@ -11,7 +11,7 @@ GameLog_Observer::GameLog_Observer(GameLog_Subject* subject) {
 
 //Detach subject from this observer before destroying observer
 GameLog_Observer::~GameLog_Observer() {
-	_subject->Detach(this);
+	// the parent destructor is called
 }
 //Redirect to the appropritate display method
 void GameLog_Observer::Update() {
