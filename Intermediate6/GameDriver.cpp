@@ -9,10 +9,12 @@ using namespace std;
 
 //Empty for now
 GameDriver::GameDriver() {
+	
+	string game = "map.xml";
+	
 	cout << "Press 0 for new game or -1 to load a saved game: ";
 	
 	int newgame;
-	
 	cin >> newgame;
 
 	if (newgame == 0){
@@ -23,33 +25,49 @@ GameDriver::GameDriver() {
 
 		players = newGame(); // creating a vector of Player objects by calling the newGame function
 		//vector<PowerPlant> pplants =  // creating a vector of all the powerplants
-
-
-		// document is now a member variable pointer
-		//document = new pugi::xml_document();
-		pugi::xml_document document;
-		pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
-		mView = new MapView(&brazil);
-
-		if (result) { // checking if the document was parsed properly
-			cout << "XML [" << "map.xml" << "] parsed without errors. \n";
-
-			brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
-
-		}
-		else {
-			cout << "XML [" << "map.xml" << "] parsed with errors. \n";
-		}
-		createResourceMarket(document.child("powergrid"));
-
-		powerplantmarket = new PowerPlantMarket(document.child("powergrid"));
-		powerplantmarket_observer = new PowerPlantMarket_Observer(powerplantmarket);
-
-		gameLog = new GameLog_Subject();
-		gameLog_ob = new GameLog_Observer(gameLog);
-		gameLog_ob = new GameLog_AllPhase_AllPlayer(gameLog_ob, gameLog);
-		playTurn(document);
 	}
+	else{
+		cout << "Please enter the name of the saved file (example: something.xml ) : ";
+		cin >> game;
+
+	}
+
+	const char* gameFile = game.c_str();		
+	
+	if (newgame != 0){
+		/*
+		phaseNumber = 1;
+		stepNumber = 1;
+		turnNumber = 1;
+
+		players = newGame();
+		*/
+	}
+
+	pugi::xml_document document;
+	pugi::xml_parse_result result = document.load_file(gameFile);  // loading the map into document
+	mView = new MapView(&brazil);
+
+	if (result) { // checking if the document was parsed properly
+		cout << "XML [" << gameFile << "] parsed without errors. \n";
+
+		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+
+	}
+	else {
+		cout << "XML [" << gameFile << "] parsed with errors. \n";
+	}
+	
+	createResourceMarket(document.child("powergrid"));
+	
+	powerplantmarket = new PowerPlantMarket(document.child("powergrid"));
+	powerplantmarket_observer = new PowerPlantMarket_Observer(powerplantmarket);
+
+	gameLog = new GameLog_Subject();
+	gameLog_ob = new GameLog_Observer(gameLog);
+	gameLog_ob = new GameLog_AllPhase_AllPlayer(gameLog_ob, gameLog);
+	
+	playTurn(document);
 	
 }
 
@@ -152,6 +170,8 @@ void GameDriver::createResourceMarket(pugi::xml_node doc) { // function parses t
 
 	// error fixed, resource market is being read from file
 	resourceMarket = ResourceMarket(resMarket[0], resMarket[1], resMarket[2], resMarket[3]);
+
+	resourceMarketObserver = new ResourceMarket_Observer(&resourceMarket);
 
 }
 
@@ -575,7 +595,7 @@ void GameDriver::Phase3() {
 
 	for (vector<Player>::reverse_iterator rit = players.rbegin(); rit != players.rend(); rit++) {
 
-		resourceMarket.DisplayMarket();
+		resourceMarketObserver->DisplayMarket();
 
 		do {
 			rit->displayPlayerInformation(powerplantmarket_observer);
@@ -613,7 +633,7 @@ void GameDriver::Phase3() {
 				cout << "You cannot make this operation." << endl;
 			}
 
-			resourceMarket.DisplayMarket();
+			resourceMarketObserver->DisplayMarket();
 		} while (true);
 
 		
@@ -794,7 +814,7 @@ void GameDriver::playerOrder(vector<Player>& players) { //phase1
 }
 
 
-//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
 	GameDriver* game = new GameDriver();
 	delete game;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ResourceMarket.h"
+#include "ResourceMarket_Observer.h"
 #include "Map.h"
 #include "MapView.h"
 #include "Player.h"
@@ -24,6 +25,8 @@ class GameDriver {
 private:
 	//The Resource Market for the game
 	ResourceMarket resourceMarket;
+	//Resource Market Observer;
+	ResourceMarket_Observer *resourceMarketObserver;
 	//A vector holding the players of the game
 	std::vector<Player> players;
 	//Power Plant Market Observable
