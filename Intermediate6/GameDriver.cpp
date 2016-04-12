@@ -9,36 +9,48 @@ using namespace std;
 
 //Empty for now
 GameDriver::GameDriver() {
+	cout << "Press 0 for new game or -1 to load a saved game: ";
 	
-	players = newGame(); // creating a vector of Player objects by calling the newGame function
-						 //vector<PowerPlant> pplants =  // creating a vector of all the powerplants
-
-
-						 // document is now a member variable pointer
-						 //document = new pugi::xml_document();
-	pugi::xml_document document;
-	pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
-	mView = new MapView(&brazil);
-
-	if (result) { // checking if the document was parsed properly
-		cout << "XML [" << "map.xml" << "] parsed without errors. \n";
-
-		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
-
-	}
-	else {
-		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
-	}
-	createResourceMarket(document.child("powergrid"));
-
-	powerplantmarket = new PowerPlantMarket(document.child("powergrid"));
-	powerplantmarket_observer = new PowerPlantMarket_Observer(powerplantmarket);
-
-	gameLog = new GameLog_Subject();
-	gameLog_ob = new GameLog_Observer(gameLog);	
-	gameLog_ob = new GameLog_AllPhase_AllPlayer(gameLog_ob, gameLog);
+	int newgame;
 	
-	playTurn(document);
+	cin >> newgame;
+
+	if (newgame == 0){
+		
+		phaseNumber = 1;
+		stepNumber = 1;
+		turnNumber = 1;
+
+		players = newGame(); // creating a vector of Player objects by calling the newGame function
+		//vector<PowerPlant> pplants =  // creating a vector of all the powerplants
+
+
+		// document is now a member variable pointer
+		//document = new pugi::xml_document();
+		pugi::xml_document document;
+		pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
+		mView = new MapView(&brazil);
+
+		if (result) { // checking if the document was parsed properly
+			cout << "XML [" << "map.xml" << "] parsed without errors. \n";
+
+			brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+
+		}
+		else {
+			cout << "XML [" << "map.xml" << "] parsed with errors. \n";
+		}
+		createResourceMarket(document.child("powergrid"));
+
+		powerplantmarket = new PowerPlantMarket(document.child("powergrid"));
+		powerplantmarket_observer = new PowerPlantMarket_Observer(powerplantmarket);
+
+		gameLog = new GameLog_Subject();
+		gameLog_ob = new GameLog_Observer(gameLog);
+		gameLog_ob = new GameLog_AllPhase_AllPlayer(gameLog_ob, gameLog);
+		playTurn(document);
+	}
+	
 }
 
 GameDriver::~GameDriver() {
@@ -261,63 +273,126 @@ bool GameDriver::saveGameOption(pugi::xml_document& doc) {
 }
 
 void GameDriver::playTurn(pugi::xml_document& doc) {
-	stepNumber = 1;
-	turnNumber = 1;
+	
 	//Determine player order
 	//Temp vector of players
-	for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
-		(*it).displayPlayerInformation(powerplantmarket_observer);
-		(*it).canBidForAuction = true;
-	}
-	phaseNumber = 2;
-	Phase2();
-
-	if (saveGameOption(doc))
-		return;
-
- 	for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
-		(*it).displayPlayerInformation(powerplantmarket_observer);
-	}
-
-	playerOrder(players);
-
-	phaseNumber = 3;
-	Phase3();
-
-	if (saveGameOption(doc))
-		return;
-
-	phaseNumber = 4;
+	bool lastTurn = false;
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
-	bool lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 
-	if (saveGameOption(doc))
-		return;
+	if (phaseNumber == 1 && turnNumber == 1){
+		for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+			(*it).displayPlayerInformation(powerplantmarket_observer);
+			(*it).canBidForAuction = true;
+		}
+		phaseNumber = 2;
+		
+		Phase2();
 
-	phaseNumber = 5;
-	Phase5();
-	
-	if (saveGameOption(doc))
-		return;
+		phaseNumber = 3;
+		playerOrder(players);
+		
+		if (saveGameOption(doc))
+			return;
 
+		for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+			(*it).displayPlayerInformation(powerplantmarket_observer);
+		}
+		
+		Phase3();
+
+		phaseNumber = 4;
+		
+		if (saveGameOption(doc))
+			return;
+
+		
+		
+		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+		lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
+
+		phaseNumber = 5;
+		
+		if (saveGameOption(doc))
+			return;
+
+		
+		Phase5();
+
+		phaseNumber = 1;
+
+		if (saveGameOption(doc))
+			return;
+	}
+	else{
+		if (phaseNumber == 1){
+			for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+				(*it).displayPlayerInformation(powerplantmarket_observer);
+				(*it).canBidForAuction = true;
+			}
+			phaseNumber = 2;
+		}
+		if (phaseNumber == 2){
+			Phase2();
+
+			phaseNumber = 3;
+			
+			if (saveGameOption(doc))
+				return;
+
+			for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+				(*it).displayPlayerInformation(powerplantmarket_observer);
+			}	
+
+			
+		}
+		if (phaseNumber == 3){
+			Phase3();
+
+			phaseNumber = 4;
+			
+			if (saveGameOption(doc))
+				return;
+
+			
+		}
+		if (phaseNumber == 4){
+			gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+			lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
+			
+			phaseNumber = 5;
+			
+			if (saveGameOption(doc))
+				return;
+
+			
+		}
+		if (phaseNumber == 5){
+			Phase5();
+			phaseNumber = 1;
+			if (saveGameOption(doc))
+				return;
+		}
+	}
 	while (lastTurn == false) {
 		turnNumber++;
 		//Determine player order
-		phaseNumber = 1;
+		
 		playerOrder(players);
 		//Temp vector of players
 		for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
 			(*it).displayPlayerInformation(powerplantmarket_observer);
 			(*it).canBidForAuction = true;
 		}
-
+		phaseNumber = 2;
+		
 		if (saveGameOption(doc))
 			return;
 
-		phaseNumber = 2;
+		
 		Phase2();
-
+		
+		phaseNumber = 3;
+		
 		if (saveGameOption(doc))
 			return;
 
@@ -325,14 +400,16 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 			(*it).displayPlayerInformation(powerplantmarket_observer);
 		}
 
-		phaseNumber = 3;
+		
 		Phase3();
+		
+		phaseNumber = 4;
 
 		if (saveGameOption(doc))
 			return;
 
 		
-		phaseNumber = 4;
+		
 		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, 2, false, "all");
 		lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 		gameLog->updateLog("\nThis is the end of the building phase for turn #" + to_string(turnNumber) + "\n", phaseNumber, false, "all");
@@ -346,12 +423,16 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 			}
 		}
 		
+		phaseNumber = 5;
+		
 		if (saveGameOption(doc))
 			return;
 
-		phaseNumber = 5;
+		
 		Phase5();
 
+		phaseNumber = 1;
+		
 		if (saveGameOption(doc))
 			return;
 	}
