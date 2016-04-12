@@ -190,6 +190,8 @@ void ResourceMarket::ReplenishMarket(int numPlayers, int step, GameLog_Subject* 
 		_resourcesInReserve[i] -= resourcesToAdd;
 
 	}
+
+	Notify();
 }
 
 int ResourceMarket::BuyResource(int type, int amount, int currentFunds) {
@@ -209,6 +211,7 @@ int ResourceMarket::BuyResource(int type, int amount, int currentFunds) {
 		_resourcesInMarket[type] -= amount;
 		return totalCostToBuy;
 	}
+	Notify();
 }
 
 int ResourceMarket::GetResourceCost(int index, int amount) {
@@ -231,21 +234,26 @@ int ResourceMarket::GetResourceCost(int index, int amount) {
 }
 
 bool ResourceMarket::RestoreResources(int index, int resources) {
-	if (index < 0 || index > 3)//verifies that the index is within the acceptable range for the array 
+	if (index < 0 || index > 3){//verifies that the index is within the acceptable range for the array 
+		Notify();
 		return false;
-	//verifies that the current resources in storage and in the market with the added amount does not exceed the total amount of the resource present in the game
-	if (resources < 0 || resources + _resourcesInMarket[index] + _resourcesInReserve[index] >_maxAmountOfResources[index])
+		//verifies that the current resources in storage and in the market with the added amount does not exceed the total amount of the resource present in the game
+	}
+	if (resources < 0 || resources + _resourcesInMarket[index] + _resourcesInReserve[index] >_maxAmountOfResources[index]){
+		Notify();
 		return false;
-	//Verifies that all resources are of the right type, and if so, returns them to the storage stack
+		//Verifies that all resources are of the right type, and if so, returns them to the storage stack
+	}
 
 	//adds the resources to the storage
 	_resourcesInReserve[index] += resources;	
+	Notify();
 	return true;
 }
 
 void ResourceMarket::pushResources(int amount, int type) {
-
 	_resourcesInMarket[type] += amount;
+	Notify();
 
 }
 void ResourceMarket::DisplayMarket() {

@@ -16,6 +16,7 @@ PowerPlantMarket::~PowerPlantMarket() {
 	delete [] market[0];
 	delete [] market[1];
 	delete [] market;
+	delete [] marketStep3;
 }
 
 //Retrieve a powerplant from the power plant market. Row 0 is the present market
@@ -23,13 +24,20 @@ PowerPlantMarket::~PowerPlantMarket() {
 PowerPlantMarket::PowerPlant PowerPlantMarket::getPowerPlant(int row, int column) {
 	return market[row][column];
 }
+
+//Retrieve a powerplant from the power plant market during step 3
+PowerPlantMarket::PowerPlant PowerPlantMarket::getPowerPlant(int index) {
+	return *marketStep3[index];
+}
+
 /**
 * Method to update the market that takes the position of the power plant to be removed,
 * then takes the first power plant in the deck, add it to the market, rearrange it and notify
 * the powerplant market observer.
 */
-void PowerPlantMarket::updateMarket(int row, int column, bool erased) {
+bool PowerPlantMarket::updateMarket(int row, int column, bool erased) {
 	
+	bool step3 = false;
 	if (!erased) {
 		deck.push_back(market[row][column]);
 	}
@@ -47,12 +55,49 @@ void PowerPlantMarket::updateMarket(int row, int column, bool erased) {
 	//draw first powerplant from the deck
 	market[1][3] = deck[0];
 	deck.erase(deck.begin());
+	if (market[1][3].GetValue() == 0) {
+		step3 = true;
+	}
 
 	reorderMarket();
 	
 	Notify();
+
+	return step3;
 }
 
+void PowerPlantMarket::createMarketStep3() {
+	int j = 0;
+	for (int i = 1; i < 3; i++){
+		j++;
+		if (market[1][i].GetValue() == 0) {
+			j--;
+		}
+		marketStep3[j-1] = &market[0][i];
+	}
+	j = 0;
+	for (int i = 0; i < 3; i++){
+		if (market[1][i].GetValue() == 0) {
+			j--;
+		}
+		else {
+			marketStep3[j - 1] = &market[1][i];
+		}
+		j++;
+	}
+}
+
+void PowerPlantMarket::updateMarketStep3(int index) {
+
+	for (int i = index; i < 6; i++) {
+		marketStep3[i] = marketStep3[i + 1];
+	}
+
+	marketStep3[5] = &deck[0];
+	deck.erase(deck.begin());
+
+	Notify(true);
+}
 
 /*
 Method that parse the xml file for all the powerplants. The first four represent the present market, 
@@ -110,10 +155,11 @@ followed by all the power plants left in random order.
 void PowerPlantMarket::initDeck(){
 	deck.push_back(powerplants[0]);
 	powerplants.erase(powerplants.begin());
-	for (int i = 0; i < 33; i++) {
+	int size = powerplants.size();
+	for (int i = 0; i < size; i++) {
 		int v1 = rand() % (powerplants.size());
 		deck.push_back(powerplants[v1]);
-		powerplants.erase(powerplants.begin());
+		powerplants.erase(powerplants.begin() + v1);
 	}
 }
 
@@ -287,6 +333,9 @@ int PowerPlantMarket::PowerPlant::ConsumeResources(int type, int amountToConsume
 	_resStored[_resType] -= _resCost;
 	return amountToConsume;
 }
+
+
+
 
 
 

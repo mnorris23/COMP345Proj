@@ -17,8 +17,10 @@ public:
 	~PowerPlantMarket_Observer();
 	//Called from Subject class from Notify() method and redirect to displayMarket();
 	void Update();
+	void Update(bool);
 	//Get the current status of the powerplant market and displays it to the console.
 	void displayMarket();
+	void displayMarketStep3();
 	//Displays the powerplant card.
 	static void DisplayPowerplant(PowerPlantMarket::PowerPlant);
 	

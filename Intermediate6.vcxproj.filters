@@ -81,6 +81,9 @@
     <ClCompile Include="Intermediate6\Strategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Intermediate6\ResourceMarket_Observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="intermediate6\GameDriver.h">
@@ -147,6 +150,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Intermediate6\GameLog_AllPhase_AllPlayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\ResourceMarket_Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Downloads\COMP345S-26375200-Assn3\IObserver.h">

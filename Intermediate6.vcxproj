@@ -21,6 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{B3D18400-13EF-465A-8821-10BB6CB0CC51}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -118,6 +119,7 @@
     <ClCompile Include="intermediate6\pugixml.cpp" />
     <ClCompile Include="intermediate6\ResourceMarket.cpp" />
     <ClCompile Include="Intermediate6\Strategy.cpp" />
+    <ClCompile Include="Intermediate6\ResourceMarket_Observer.cpp" />
     <ClCompile Include="intermediate6\SummaryCard.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,7 +147,6 @@
     <ClInclude Include="intermediate6\pugiconfig.hpp" />
     <ClInclude Include="intermediate6\pugixml.hpp" />
     <ClInclude Include="intermediate6\ResourceMarket.h" />
-    <ClInclude Include="Intermediate6\Strategy.h" />
     <ClInclude Include="intermediate6\SummaryCard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
