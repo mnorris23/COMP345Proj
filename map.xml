@@ -1487,7 +1487,7 @@
 			<type>garbage</type>
 			<cost>6</cost>
 			<burns>1</burns>
-			<powers>2</powers>
+			<powers>1</powers>
 		</powerPlant>
 		<powerPlant>
 			<type>oil</type>
@@ -1541,7 +1541,7 @@
 			<type>coal</type>
 			<cost>31</cost>
 			<burns>3</burns>
-			<powers>7</powers>
+			<powers>6</powers>
 		</powerPlant>
 		<powerPlant>
 			<type>coal</type>
@@ -1667,7 +1667,7 @@
 			<type>hybrid</type>
 			<cost>29</cost>
 			<burns>1</burns>
-			<powers>3</powers>
+			<powers>4</powers>
 		</powerPlant>
 		<powerPlant>
 			<type>hybrid</type>
@@ -1719,114 +1719,10 @@
 		</powerPlant>
 	</availablePowerPlants>
 	<resourceMarket>
-		<box>
-			<cost>1</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>2</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>3</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>4</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>5</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>6</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>7</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>3</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>8</cost>
-			<holds>
-				<coal>3</coal>
-				<oil>3</oil>
-				<garbage>3</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>10</cost>
-			<holds>
-				<coal>0</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>12</cost>
-			<holds>
-				<coal>0</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>0</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>14</cost>
-			<holds>
-				<coal>0</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>1</uranium>
-			</holds>
-		</box>
-		<box>
-			<cost>16</cost>
-			<holds>
-				<coal>0</coal>
-				<oil>0</oil>
-				<garbage>0</garbage>
-				<uranium>1</uranium>
-			</holds>
-		</box>
+		<coal>24</coal>
+		<oil>18</oil>
+		<garbage>6</garbage>
+		<uranium>2</uranium>
 	</resourceMarket>
 	<resourceSupply>
 		<coal>0</coal>
@@ -1834,4 +1730,14 @@
 		<garbage>18</garbage>
 		<uranium>10</uranium>
 	</resourceSupply>
+	<phaseNumber>
+	</phaseNumber>
+	<stepNumber>
+	</stepNumber>
+	<turnNumber>
+	</turnNumber>
+	<winningNumberCities>
+	</winningNumberCities>
+	<numberCitiesPhase2>
+	</numberCitiesPhase2>
 </powergrid>

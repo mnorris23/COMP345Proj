@@ -110,10 +110,11 @@ followed by all the power plants left in random order.
 void PowerPlantMarket::initDeck(){
 	deck.push_back(powerplants[0]);
 	powerplants.erase(powerplants.begin());
-	for (int i = 0; i < 33; i++) {
+	int size = powerplants.size();
+	for (int i = 0; i < size; i++) {
 		int v1 = rand() % (powerplants.size());
 		deck.push_back(powerplants[v1]);
-		powerplants.erase(powerplants.begin());
+		powerplants.erase(powerplants.begin() + v1);
 	}
 }
 
@@ -287,6 +288,9 @@ int PowerPlantMarket::PowerPlant::ConsumeResources(int type, int amountToConsume
 	_resStored[_resType] -= _resCost;
 	return amountToConsume;
 }
+
+
+
 
 
 

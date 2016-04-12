@@ -97,6 +97,7 @@ private:
 	//Class that need direct access to a powerplant object
 	friend class Player;
 	friend class PowerPlantMarket_Observer;
+	friend class GameDriver;
 
 public:
 	PowerPlantMarket();
@@ -108,5 +109,8 @@ public:
 	//Return powerplant object for class that are friend
 	PowerPlantMarket::PowerPlant getPowerPlant(int, int);
 	void removeBiggestValued();
+
+	PowerPlantMarket::PowerPlant** getMarket() { return market; };
 	
+	std::vector<PowerPlantMarket::PowerPlant> getDeck() { return deck; };
 };
