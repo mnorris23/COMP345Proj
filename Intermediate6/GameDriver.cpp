@@ -10,25 +10,54 @@ using namespace std;
 //Empty for now
 GameDriver::GameDriver() {
 	
+	string game = "map.xml";
+	
+	cout << "Press 0 for new game or -1 to load a saved game: ";
+	
+	int newgame;
+	cin >> newgame;
+
+	if (newgame == 0){
+		
+		phaseNumber = 1;
+		stepNumber = 1;
+		turnNumber = 1;
+
 	players = newGame(); // creating a vector of Player objects by calling the newGame function
 						 //vector<PowerPlant> pplants =  // creating a vector of all the powerplants
+	}
+	else{
+		cout << "Please enter the name of the saved file (example: something.xml ) : ";
+		cin >> game;
 
+	}
 
-						 // document is now a member variable pointer
-						 //document = new pugi::xml_document();
+	const char* gameFile = game.c_str();		
+	
+	if (newgame != 0){
+		/*
+		phaseNumber = 1;
+		stepNumber = 1;
+		turnNumber = 1;
+
+		players = newGame();
+		*/
+	}
+
 	pugi::xml_document document;
-	pugi::xml_parse_result result = document.load_file("map.xml");  // loading the map into document
+	pugi::xml_parse_result result = document.load_file(gameFile);  // loading the map into document
 	mView = new MapView(&brazil);
 
 	if (result) { // checking if the document was parsed properly
-		cout << "XML [" << "map.xml" << "] parsed without errors. \n";
+		cout << "XML [" << gameFile << "] parsed without errors. \n";
 
 		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
 
 	}
 	else {
-		cout << "XML [" << "map.xml" << "] parsed with errors. \n";
+		cout << "XML [" << gameFile << "] parsed with errors. \n";
 	}
+	
 	createResourceMarket(document.child("powergrid"));
 
 	powerplantmarket = new PowerPlantMarket(document.child("powergrid"));
@@ -39,6 +68,7 @@ GameDriver::GameDriver() {
 	gameLog_ob = new GameLog_AllPhase_AllPlayer(gameLog_ob, gameLog);
 	
 	playTurn(document);
+	
 }
 
 GameDriver::~GameDriver() {
@@ -52,12 +82,16 @@ GameDriver::~GameDriver() {
 	gameLog_ob = NULL;
 	delete gameLog;
 	gameLog = NULL;
-	
+	delete resourceMarketObserver;
+	resourceMarketObserver = NULL;
+	delete resourceMarket;
+	resourceMarket = NULL;
 }
 
 
 
 vector<Player> GameDriver::newGame() { // asks the users how many players will be playing the game and initiliazes that many players
+
 	int numbOfPlayers;
 	cout << "How many players will be playing?\n";
 	cin >> numbOfPlayers;
@@ -111,7 +145,9 @@ void GameDriver::createResourceMarket(pugi::xml_node doc) { // function parses t
 	int g = stoi(gAmount);
 	string uAmount = resourceMarketNode.child("uranium").child_value();
 	int u = stoi(uAmount);
-	resourceMarket = ResourceMarket(c, o, g, u);
+	resourceMarket = new ResourceMarket(c, o, g, u);
+
+	resourceMarketObserver = new ResourceMarket_Observer(resourceMarket);
 
 }
 
@@ -282,10 +318,10 @@ void GameDriver::saveGame(pugi::xml_node node) {
 	}
 
 	// saving resources in market
-	int numbCoal = resourceMarket.GetResourceInMarket(0);
-	int numbOil = resourceMarket.GetResourceInMarket(1);
-	int numbGarbage = resourceMarket.GetResourceInMarket(2);
-	int numbUranium = resourceMarket.GetResourceInMarket(3);
+	int numbCoal = (*resourceMarket).GetResourceInMarket(0);
+	int numbOil = (*resourceMarket).GetResourceInMarket(1);
+	int numbGarbage = (*resourceMarket).GetResourceInMarket(2);
+	int numbUranium = (*resourceMarket).GetResourceInMarket(3);
 	string c = to_string(numbCoal);
 	string o = to_string(numbOil);
 	string g = to_string(numbGarbage);
@@ -301,10 +337,10 @@ void GameDriver::saveGame(pugi::xml_node node) {
 	resMarketNode.child("uranium").text().set(constU);
 
 	// saving resources in supply
-	int supCoal = resourceMarket.GetResourcesInReserve(0);
-	int supOil = resourceMarket.GetResourcesInReserve(1);
-	int supGarbage = resourceMarket.GetResourcesInReserve(2);
-	int supUranium = resourceMarket.GetResourcesInReserve(3);
+	int supCoal = (*resourceMarket).GetResourcesInReserve(0);
+	int supOil = (*resourceMarket).GetResourcesInReserve(1);
+	int supGarbage = (*resourceMarket).GetResourcesInReserve(2);
+	int supUranium = (*resourceMarket).GetResourcesInReserve(3);
 	string cs = to_string(supCoal);
 	string os = to_string(supOil);
 	string gs = to_string(supGarbage);
@@ -358,17 +394,24 @@ bool GameDriver::saveGameOption(pugi::xml_document& doc) {
 }
 
 void GameDriver::playTurn(pugi::xml_document& doc) {
-	stepNumber = 1;
-	turnNumber = 1;
+	
 	//Determine player order
 	//Temp vector of players
+	bool lastTurn = false;
+	string line = "\n---------------------------------------------------------------\n";
+
+	if (phaseNumber == 1 && turnNumber == 1){
 	for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
 		(*it).displayPlayerInformation(powerplantmarket_observer);
 		(*it).canBidForAuction = true;
 	}
 	phaseNumber = 2;
+		
 	Phase2();
 
+		phaseNumber = 3;
+		playerOrder(players);
+		
 	if (saveGameOption(doc))
 		return;
 
@@ -376,45 +419,106 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 		(*it).displayPlayerInformation(powerplantmarket_observer);
 	}
 
-	playerOrder(players);
+		Phase3();
 
-	phaseNumber = 3;
-	Phase3();
+		phaseNumber = 4;
+		
+		if (saveGameOption(doc))
+			return;
 
-	if (saveGameOption(doc))
-		return;
+		
+		
+		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+		lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 
-	phaseNumber = 4;
-	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
-	bool lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
+		phaseNumber = 5;
+		
+		if (saveGameOption(doc))
+			return;
 
-	if (saveGameOption(doc))
-		return;
+		
+		Phase5();
 
-	phaseNumber = 5;
-	Phase5();
+		phaseNumber = 1;
+
+		if (saveGameOption(doc))
+			return;
+	}
+	else{
+		if (phaseNumber == 1){
+			for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+				(*it).displayPlayerInformation(powerplantmarket_observer);
+				(*it).canBidForAuction = true;
+			}
+			phaseNumber = 2;
+		}
+		if (phaseNumber == 2){
+			Phase2();
+
+			phaseNumber = 3;
+
+			if (saveGameOption(doc))
+				return;
+
+			for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
+				(*it).displayPlayerInformation(powerplantmarket_observer);
+			}	
+
+			
+		}
+		if (phaseNumber == 3){
+			Phase3();
+
+			phaseNumber = 4;
 	
+
 	if (saveGameOption(doc))
 		return;
 
+			
+		}
+		if (phaseNumber == 4){
+			gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+			lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
+			
+			phaseNumber = 5;
+	
+			if (saveGameOption(doc))
+				return;
+
+			
+		}
+		if (phaseNumber == 5){
+			Phase5();
+			phaseNumber = 1;
+			if (saveGameOption(doc))
+				return;
+		}
+	}
 	while (lastTurn == false) {
 		turnNumber++;
 		//Determine player order
-		phaseNumber = 1;
+		
 		playerOrder(players);
 		//Temp vector of players
 		for (vector<Player>::iterator it = players.begin(); it != players.end(); it++) {
 			(*it).displayPlayerInformation(powerplantmarket_observer);
 			(*it).canBidForAuction = true;
 		}
+		phaseNumber = 2;
 
 		if (saveGameOption(doc))
 			return;
 
+		
 		phaseNumber = 2;
-		Phase2();
+		if (stepNumber < 3)
+			Phase2();
+		else
+			Phase2Step3();
 
+		phaseNumber = 3;
+		
 		if (saveGameOption(doc))
 			return;
 
@@ -422,14 +526,16 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 			(*it).displayPlayerInformation(powerplantmarket_observer);
 		}
 
-		phaseNumber = 3;
+		
 		Phase3();
+
+		phaseNumber = 4;
 
 		if (saveGameOption(doc))
 			return;
 
 		
-		phaseNumber = 4;
+		
 		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, 2, false, "all");
 		lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 		gameLog->updateLog("\nThis is the end of the building phase for turn #" + to_string(turnNumber) + "\n", phaseNumber, false, "all");
@@ -443,12 +549,16 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 			}
 		}
 		
+		phaseNumber = 5;
+		
 		if (saveGameOption(doc))
 			return;
 
-		phaseNumber = 5;
+		
 		Phase5();
 
+		phaseNumber = 1;
+		
 		if (saveGameOption(doc))
 			return;
 	}
@@ -467,7 +577,7 @@ void GameDriver::Phase2() {
 	bool auctioned = false;
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, 2, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) +  "\nStep: " + to_string(stepNumber) + line, 2, false, "all");
 
 	for (int index = 0; index < players.size(); index++) {
 
@@ -502,9 +612,51 @@ void GameDriver::Phase2() {
 	}
 	gameLog->updateLog("\nThis is the end of the auction phase for turn #" + to_string(turnNumber) + "\n", 2, false, "all");
 
+	bool step3 = false;
 	if (auctioned == false) {
-		powerplantmarket->updateMarket(0, 0, true);
+		step3 = powerplantmarket->updateMarket(0, 0, true);
 	}
+
+	if (step3)
+		stepNumber = 3;
+
+}
+
+void GameDriver::Phase2Step3() {
+
+	powerplantmarket_observer->displayMarketStep3();
+
+	bool auctioned = false;
+
+	string line = "\n---------------------------------------------------------------\n";
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, 2, false, "all");
+
+	for (int index = 0; index < players.size(); index++) {
+
+		for (int i = index; i < players.size() + index; i++) {
+			if (players[i % players.size()].canBidForAuction == true) {
+				int bidOn;
+				do {
+					cout << "\nPlayer " << players[i % players.size()].getName() << ", enter the number of the powerplant you wish to bid on (1-6) or -1 to skip: "; // players[i].getName() has been switched to players[i % players.size()].getName() to avoid indexOutOfBounds
+					cin >> bidOn;
+					if (bidOn == -1) {
+						players[i].canBidForAuction = false;
+						break;
+					}
+					auctioned = true;
+				} while (bidOn > 6);
+				if (bidOn > 0) {
+					gameLog->updateLog(players[i % players.size()].getName() + " put powerplant #" + to_string(powerplantmarket->getPowerPlant(0, bidOn - 1).GetValue()) + " to auction\n", 2, false, "all");
+					Auction(0, bidOn - 1);
+					powerplantmarket->updateMarket(0, bidOn - 1, true);
+				}
+				break;
+			}
+		}
+
+	}
+	gameLog->updateLog("\nThis is the end of the auction phase for turn #" + to_string(turnNumber) + "\n", 2, false, "all");
+
 
 }
 
@@ -587,11 +739,11 @@ int GameDriver::bid(int bidder, int _highestBid) {
 void GameDriver::Phase3() {
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 
 	for (vector<Player>::reverse_iterator rit = players.rbegin(); rit != players.rend(); rit++) {
 
-		resourceMarket.DisplayMarket();
+		resourceMarketObserver->DisplayMarket();
 
 		do {
 			rit->displayPlayerInformation(powerplantmarket_observer);
@@ -609,7 +761,7 @@ void GameDriver::Phase3() {
 			int index;
 			cin >> index;
 			if (index == -1) break;
-			int totalCost = resourceMarket.BuyResource(type - 1, amount, (*rit).getMoney());
+			int totalCost = (*resourceMarket).BuyResource(type - 1, amount, (*rit).getMoney());
 			if ((*rit).AddResources(index - 1, type - 1, amount, totalCost)) {
 				string res = "";
 				switch (type) {
@@ -625,11 +777,11 @@ void GameDriver::Phase3() {
 				gameLog->updateLog(str, phaseNumber, false, (*rit).getColor());
 			}
 			else {
-				resourceMarket.pushResources(amount, type - 1);
+				(*resourceMarket).pushResources(amount, type - 1);
 				cout << "You cannot make this operation." << endl;
 			}
 
-			resourceMarket.DisplayMarket();
+			resourceMarketObserver->DisplayMarket();
 		} while (true);
 
 		
@@ -642,7 +794,7 @@ void GameDriver::Phase5() {
 
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 
 	for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
 		//display the amount of houses (cities)
@@ -700,7 +852,7 @@ void GameDriver::Phase5() {
 		//restore resources to market
 		for (int j = 0; j < (*i).getNumberOfPowerPlants(); j++) {
 			if ((*(*i).GetPowerplant(j)).GetCurrentCitiesPowered() > 0) {
-				resourceMarket.RestoreResources((*(*i).GetPowerplant(j)).GetResType(), (*(*i).GetPowerplant(j)).ConsumeResources());
+				(*resourceMarket).RestoreResources((*(*i).GetPowerplant(j)).GetResType(), (*(*i).GetPowerplant(j)).ConsumeResources());
 				string res = "";
 				switch ((*(*i).GetPowerplant(j)).GetResType()) {
 				case 0: res = " coal "; break;
@@ -724,7 +876,7 @@ void GameDriver::Phase5() {
 	}
 	//take out highest valued powerplant from market
 	//Replenish Market
-	resourceMarket.ReplenishMarket(players.size(), stepNumber, gameLog);
+	(*resourceMarket).ReplenishMarket(players.size(), stepNumber, gameLog);
 	if (stepNumber != 3) {
 		powerplantmarket->updateMarket(1, 3, false);
 	}
@@ -810,7 +962,7 @@ void GameDriver::playerOrder(vector<Player>& players) { //phase1
 }
 
 
-//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
 	GameDriver* game = new GameDriver();
 	delete game;

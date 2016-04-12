@@ -13,4 +13,5 @@ public:
 	virtual void Attach(Observer*);
 	virtual void Detach(Observer*);
 	virtual void Notify();
+	virtual void Notify(bool);
 };

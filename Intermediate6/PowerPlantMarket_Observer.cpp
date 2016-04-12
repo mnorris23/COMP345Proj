@@ -1,6 +1,7 @@
 #include "PowerPlantMarket_Observer.h"
 #include "PowerPlantMarket.h"
 #include <iostream>
+#include "GameDriver.h"
 
 using namespace std;
 
@@ -21,6 +22,10 @@ void PowerPlantMarket_Observer::Update() {
 	displayMarket();
 }
 
+void PowerPlantMarket_Observer::Update(bool step3) {
+	displayMarketStep3();
+}
+
 //Get the current status of the powerplant market and displays it to the console.
 void PowerPlantMarket_Observer::displayMarket() {
 
@@ -39,6 +44,17 @@ void PowerPlantMarket_Observer::displayMarket() {
 	}
 	cout << "-------------------------------------";
 }
+
+void PowerPlantMarket_Observer::displayMarketStep3() {
+
+	cout << "\n-------------------------------------";
+	cout << "\nDisplaying Current Market:" << endl;
+	for (int i = 0; i < 6; i++){
+		DisplayPowerplant(_subject->getPowerPlant(i));
+	}
+	cout << "\n-------------------------------------";
+}
+
 
 /*
 Displays a powerplant.

@@ -83,6 +83,8 @@ private:
 
 	//2d array of power plants representing present and future market 
 	PowerPlant** market;
+	//array for the power plant market in step 3
+	PowerPlant* marketStep3[6];
 	//Deck of all powerplant to draw
 	std::vector<PowerPlant> deck;
 	//Initial vector of powerplants when loaded from the xml file. When randomly ordered, will become the deck
@@ -105,11 +107,17 @@ public:
 	~PowerPlantMarket();
 
 	//Method that will notify the observer.
-	void updateMarket(int, int, bool);
+	bool updateMarket(int, int, bool);
 	//Return powerplant object for class that are friend
 	PowerPlantMarket::PowerPlant getPowerPlant(int, int);
+	PowerPlantMarket::PowerPlant getPowerPlant(int);
 	void removeBiggestValued();
+	//Create powerplant market for step 3
+	void createMarketStep3();
+	//Update market for step 3
+	void updateMarketStep3(int);
 
+	
 	PowerPlantMarket::PowerPlant** getMarket() { return market; };
 	
 	std::vector<PowerPlantMarket::PowerPlant> getDeck() { return deck; };
