@@ -36,6 +36,7 @@ private:
 	GameLog_Observer *gameLog_ob;
 	//Phase1 Method
 	void Phase2();
+	void Phase2Step3();
 	void Phase3();
 	//void Phase4();
 	void Phase5();
@@ -56,6 +57,7 @@ private:
 	int turnNumber;
 
 public:
+
 
 	//Empty Constructor
 	GameDriver();

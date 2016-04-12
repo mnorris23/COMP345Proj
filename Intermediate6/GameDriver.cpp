@@ -58,6 +58,7 @@ GameDriver::~GameDriver() {
 
 
 vector<Player> GameDriver::newGame() { // asks the users how many players will be playing the game and initiliazes that many players
+
 	int numbOfPlayers;
 	cout << "How many players will be playing?\n";
 	cin >> numbOfPlayers;
@@ -289,7 +290,7 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 
 	phaseNumber = 4;
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 	bool lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 
 	if (saveGameOption(doc))
@@ -316,7 +317,10 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 			return;
 
 		phaseNumber = 2;
-		Phase2();
+		if (stepNumber < 3)
+			Phase2();
+		else
+			Phase2Step3();
 
 		if (saveGameOption(doc))
 			return;
@@ -333,7 +337,7 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 
 		
 		phaseNumber = 4;
-		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, 2, false, "all");
+		gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, 2, false, "all");
 		lastTurn = brazil.Phase4(players, powerplantmarket_observer, gameLog, winningNumberOfCities, stepNumber);
 		gameLog->updateLog("\nThis is the end of the building phase for turn #" + to_string(turnNumber) + "\n", phaseNumber, false, "all");
 		if (stepNumber == 1) {
@@ -366,11 +370,11 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 void GameDriver::Phase2() {
 
 	powerplantmarket_observer->displayMarket();
-
+	
 	bool auctioned = false;
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, 2, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) +  "\nStep: " + to_string(stepNumber) + line, 2, false, "all");
 
 	for (int index = 0; index < players.size(); index++) {
 
@@ -405,9 +409,51 @@ void GameDriver::Phase2() {
 	}
 	gameLog->updateLog("\nThis is the end of the auction phase for turn #" + to_string(turnNumber) + "\n", 2, false, "all");
 
+	bool step3 = false;
 	if (auctioned == false) {
-		powerplantmarket->updateMarket(0, 0, true);
+		step3 = powerplantmarket->updateMarket(0, 0, true);
 	}
+
+	if (step3)
+		stepNumber = 3;
+
+}
+
+void GameDriver::Phase2Step3() {
+
+	powerplantmarket_observer->displayMarketStep3();
+
+	bool auctioned = false;
+
+	string line = "\n---------------------------------------------------------------\n";
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, 2, false, "all");
+
+	for (int index = 0; index < players.size(); index++) {
+
+		for (int i = index; i < players.size() + index; i++) {
+			if (players[i % players.size()].canBidForAuction == true) {
+				int bidOn;
+				do {
+					cout << "\nPlayer " << players[i % players.size()].getName() << ", enter the number of the powerplant you wish to bid on (1-6) or -1 to skip: "; // players[i].getName() has been switched to players[i % players.size()].getName() to avoid indexOutOfBounds
+					cin >> bidOn;
+					if (bidOn == -1) {
+						players[i].canBidForAuction = false;
+						break;
+					}
+					auctioned = true;
+				} while (bidOn > 6);
+				if (bidOn > 0) {
+					gameLog->updateLog(players[i % players.size()].getName() + " put powerplant #" + to_string(powerplantmarket->getPowerPlant(0, bidOn - 1).GetValue()) + " to auction\n", 2, false, "all");
+					Auction(0, bidOn - 1);
+					powerplantmarket->updateMarket(0, bidOn - 1, true);
+				}
+				break;
+			}
+		}
+
+	}
+	gameLog->updateLog("\nThis is the end of the auction phase for turn #" + to_string(turnNumber) + "\n", 2, false, "all");
+
 
 }
 
@@ -490,7 +536,7 @@ int GameDriver::bid(int bidder, int _highestBid) {
 void GameDriver::Phase3() {
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 
 	for (vector<Player>::reverse_iterator rit = players.rbegin(); rit != players.rend(); rit++) {
 
@@ -545,7 +591,7 @@ void GameDriver::Phase5() {
 
 
 	string line = "\n---------------------------------------------------------------\n";
-	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + line, phaseNumber, false, "all");
+	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 
 	for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
 		//display the amount of houses (cities)
