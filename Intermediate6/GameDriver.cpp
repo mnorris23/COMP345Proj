@@ -707,8 +707,9 @@ void GameDriver::Phase2() {
 				} while (bidOn > 4);
 				if (bidOn > 0) {
 					gameLog->updateLog(players[i % players.size()].getName() + " put powerplant #" + to_string(powerplantmarket->getPowerPlant(0, bidOn - 1).GetValue()) + " to auction\n", 2, false, "all");
-					Auction(0, bidOn - 1);
-					powerplantmarket->updateMarket(0, bidOn - 1, true);
+					bool auctioned = Auction(0, bidOn - 1);
+					if (auctioned)
+						powerplantmarket->updateMarket(0, bidOn - 1, true);
 				}
 				break;
 			}
@@ -752,8 +753,9 @@ void GameDriver::Phase2Step3() {
 				} while (bidOn > 6);
 				if (bidOn > 0) {
 					gameLog->updateLog(players[i % players.size()].getName() + " put powerplant #" + to_string(powerplantmarket->getPowerPlant(0, bidOn - 1).GetValue()) + " to auction\n", 2, false, "all");
-					Auction(0, bidOn - 1);
-					powerplantmarket->updateMarket(0, bidOn - 1, true);
+					bool auctioned = Auction(0, bidOn - 1);
+					if (auctioned)
+						powerplantmarket->updateMarket(0, bidOn - 1, true);
 				}
 				break;
 			}
@@ -765,8 +767,10 @@ void GameDriver::Phase2Step3() {
 
 }
 
-void GameDriver::Auction(int row, int column) {
+bool GameDriver::Auction(int row, int column) {
 	
+	bool auctioned = false;
+
 	int _highestBid;
 	if (stepNumber < 3)
 		_highestBid = powerplantmarket->getPowerPlant(row, column).GetValue() - 1;
@@ -787,6 +791,7 @@ void GameDriver::Auction(int row, int column) {
 		}
 	}
 
+	int howmanybid = 0;
 	if (bidders > 1) {
 		cout << "Welcome to the Auction. \nThe starting bid is " << _highestBid + 1 << "\nGood Luck!" << endl;
 		while (bidders > 1) {
@@ -794,7 +799,7 @@ void GameDriver::Auction(int row, int column) {
 			for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
 				if ((*i).canBid == true) {
 
-					int currentbid = bid(index, _highestBid);
+					 int currentbid = bid(index, _highestBid);
 
 					if (currentbid == -1) {
 						gameLog->updateLog("\n" + (*i).getName() + " doesn't bid on powerplant #" + to_string(powerplantmarket->getPowerPlant(row, column).GetValue()) + " and is now out of this auction.\n", 2, false, (*i).getColor());
@@ -805,6 +810,7 @@ void GameDriver::Auction(int row, int column) {
 						}
 					}
 					else {
+						howmanybid++;
 						_highestBid = currentbid;
 						gameLog->updateLog("\n" + (*i).getName() + " made a bid of " + to_string(_highestBid) + " elektros on powerplant #" + to_string(powerplantmarket->getPowerPlant(row, column).GetValue()) + "\n", 2, false, (*i).getColor());
 					}
@@ -813,6 +819,25 @@ void GameDriver::Auction(int row, int column) {
 			}
 		}
 	}
+	if (howmanybid == 0) {
+		cout << "You are the last player in the auction and no one made any bet." << endl;
+		cout << "Do you want to get powerplant #" << powerplantmarket->getPowerPlant(row, column).GetValue() << " for the minimum value of " << (_highestBid + 1) << "? ";
+		cout << "0 to not buy the powerplant and 1 to buy the powerplant for " << (_highestBid + 1) << " ";
+		int pp;
+		cin >> pp;
+		if (pp == 0){
+			for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
+				if ((*i).canBid == true) {
+					(*i).canBid = false;
+				}
+
+			}
+		}
+		else {
+			cout << "You decide to buy powerplant #" << powerplantmarket->getPowerPlant(row, column).GetValue() << " for the minimum value of " << (_highestBid + 1) << endl;
+		}
+	}
+
 
 	for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
 		if ((*i).canBid == true) {
@@ -830,13 +855,18 @@ void GameDriver::Auction(int row, int column) {
 			string str = (*i).getName() + " is the winner of the auction of powerplant #" + to_string(powerplantmarket->getPowerPlant(row, column).GetValue()) + " for " + to_string(_highestBid) + " elektros\n";
 			str += (*i).getName() + " had " + to_string((*i).getMoney()) + " and now has " + to_string((*i).getMoney() - _highestBid) + " elektros.\n";
 			gameLog->updateLog(str, 2, false, (*i).getColor());
-			if (stepNumber < 3)
-				(*i).AddPowerplant(powerplantmarket->getPowerPlant(row, column), _highestBid);	
-			else 
+			if (stepNumber < 3) {
+				(*i).AddPowerplant(powerplantmarket->getPowerPlant(row, column), _highestBid);
+				auctioned = true;
+			}
+			else {
 				(*i).AddPowerplant(powerplantmarket->getPowerPlant(column), _highestBid);
+				auctioned = true;
+			}
 			break;
 		}
 	}
+	return auctioned;
 
 }
 
