@@ -82,6 +82,7 @@ public:
 
 	Map() {};
 	void createMap(pugi::xml_node);
+	void loadSavedMap(pugi::xml_node, vector<Player>&);
 	int costToLocation(Player, string);
 	bool Phase4(vector<Player>&, PowerPlantMarket_Observer*, GameLog_Subject*, int, int);
 	void saveMap(std::vector<Player>, pugi::xml_node);

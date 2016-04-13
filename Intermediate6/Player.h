@@ -30,6 +30,7 @@ public:
 
 	Player(std::string name, std::string color, int money, int maxNumberOfPplants);
 
+	Player(string);
 	/**
 	The default constructor. Not used.
 	*/

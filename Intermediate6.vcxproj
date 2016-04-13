@@ -135,7 +135,6 @@
     <ClInclude Include="intermediate6\Observable.h" />
     <ClInclude Include="intermediate6\Observer.h" />
     <ClInclude Include="intermediate6\Player.h" />
-    <ClInclude Include="intermediate6\PowerPlant.h" />
     <ClInclude Include="intermediate6\PowerPlantMarket.h" />
     <ClInclude Include="intermediate6\PowerPlantMarket_Observer.h" />
     <ClInclude Include="intermediate6\pugiconfig.hpp" />

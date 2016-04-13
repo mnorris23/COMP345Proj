@@ -75,4 +75,5 @@ public:
 	void playerOrder(vector<Player>& players);
 	void saveGame(pugi::xml_node);
 	bool saveGameOption(pugi::xml_document&);
+	vector<Player> loadPlayers(pugi::xml_node);
 };

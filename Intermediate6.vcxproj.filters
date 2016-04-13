@@ -119,9 +119,6 @@
     <ClInclude Include="intermediate6\Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="intermediate6\PowerPlant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="intermediate6\PowerPlantMarket.h">
       <Filter>Header Files</Filter>
     </ClInclude>

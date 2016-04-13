@@ -16,7 +16,7 @@ PowerPlantMarket::~PowerPlantMarket() {
 	delete [] market[0];
 	delete [] market[1];
 	delete [] market;
-	delete [] marketStep3;
+	//delete [] marketStep3;
 }
 
 //Retrieve a powerplant from the power plant market. Row 0 is the present market
@@ -247,6 +247,10 @@ int PowerPlantMarket::PowerPlant::GetAmountStored() {
 	return total;
 }
 
+// returning pointer to the first element in the resStored array (coal, oil, garbage, uranium)
+int* PowerPlantMarket::PowerPlant::getResStored() {
+	return &_resStored[0];
+}
 
 /*
 Resource* PowerPlantMarket::PowerPlant::GetResStoredAt(int index) {
