@@ -63,6 +63,54 @@ void Map::createMap(pugi::xml_node doc) {
 	Notify(); // notify observers that a new map object has been created
 }
 
+void Map::loadSavedMap(pugi::xml_node doc, vector<Player> &players) {
+
+	pugi::xml_node map = doc.child("map");
+	pugi::xml_node region = map.child("region");
+
+	for (pugi::xml_node currentCity = map.child("city"); currentCity; currentCity = currentCity.next_sibling()) { // looping through all the cities
+		string cityName = currentCity.child("name").child_value(); // parsing out the city name
+		string cityColor = currentCity.child("color").child_value(); // parsing out the city color
+		double x = stod(currentCity.child("coordinates").child("x").child_value()); // parsing out the x coordinate
+		double y = stod(currentCity.child("coordinates").child("y").child_value()); // parsing out the y coordinate
+		City city(cityName, cityColor, x, y); // a new city is created
+		for (pugi::xml_node currentOccupant = currentCity.child("occupants").child("occupant"); currentOccupant; currentOccupant = currentOccupant.next_sibling()) {
+			string occupant = currentOccupant.child_value();
+			if (!occupant.empty()) {
+				for (vector<Player>::iterator playerIt = players.begin(); playerIt != players.end(); playerIt++) {
+					string name = (*playerIt).getName();
+					if (name.compare(occupant) == 0) {
+						Player* p = new Player(name);
+						city.addOccupant(p);
+					}
+				}
+			}
+		}
+		cities.push_back(city); // the city is added to the cities vector
+	}
+
+	int i = 0;
+	pugi::xml_node currentCity;
+	for (currentCity = map.child("city"), i; currentCity; currentCity = currentCity.next_sibling(), ++i) { // looping through all the cities
+		string cityName = currentCity.child("name").child_value(); // parsing out the city name
+
+		City &c = cities[i]; // storing a reference of the current city
+		for (pugi::xml_node currentConnection = currentCity.child("adjacentCities").child("connection"); currentConnection; currentConnection = currentConnection.next_sibling()) { // looping through all the adjacent cities of the current city
+			string connectionName = currentConnection.child("to").child_value(); // parsing out the adjacent city name
+			int cost = stoi(currentConnection.child("cost").child_value()); // parsing out the cost between the 2 cities
+
+			for (vector<City>::iterator it = cities.begin(); it != cities.end(); ++it) { // using an iterator to loop through all the cities
+				if (((*it).getCityName()).compare(connectionName) == 0) { // finding a match to the city name
+					City& conCity = *it;
+					c.addConnectingCity(cost, &conCity); // adding a connecting city with a pointer
+					break;
+				}
+			}
+		}
+	}
+	Notify(); // notify observers that a new map object has been created
+}
+
 int Map::costToLocation(Player p, string newCityLocation) { // function calculates the cost to get to a new location, takes in the player buying a new house, the city name and the map object
 	vector<House> h;
 	if (p.getNumberOfHouses() == 0)
@@ -168,7 +216,8 @@ bool Map::Phase4(vector<Player> &players, PowerPlantMarket_Observer * powerplant
 					gameLog->updateLog(str, 4, false, (*currentPlayer).getColor());
 					House h = { cityName }; // a new house is instantiated
 					(*currentPlayer).AddHouse(h, totalCost); // the house is added to the players possessions and the totalCost is deducted from his money
-					(*city).addOccupant(currentPlayer); // the player is added as an occupant of the city
+					Player* p = new Player((*currentPlayer).getName());
+					(*city).addOccupant(p); // the player is added as an occupant of the city
 					if ((*currentPlayer).getNumberOfHouses() == winningNumbCities) {
 						cout << "Congratulations, you have purchased our " << winningNumbCities << "th city!!!" << endl;
 						lastTurn = true;

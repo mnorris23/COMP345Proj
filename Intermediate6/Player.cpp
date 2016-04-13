@@ -120,6 +120,8 @@ Player::Player() : maxNumberOfPowerplants(3) {
 	numberOfHouses = 0;
 }
 
+Player::Player(string aname) : name(aname) {}
+
 
 
 

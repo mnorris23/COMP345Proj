@@ -1351,15 +1351,15 @@
 			<powerPlants>
 				<powerPlant>
 					<value></value>
-					<resources></resources>
-				</powerPlant>
-				<powerPlant>
-					<value></value>
-					<resources></resources>
-				</powerPlant>
-				<powerPlant>
-					<value></value>
-					<resources></resources>
+					<resources>
+						<resource></resource>
+						<resource></resource>
+						<resource></resource>
+						<resource></resource>
+					</resources>
+					<type></type>
+					<maxCitiesPowered></maxCitiesPowered>
+					<resourceCost></resourceCost>
 				</powerPlant>
 			</powerPlants>
 		</player>
@@ -1373,15 +1373,15 @@
 			<powerPlants>
 				<powerPlant>
 					<value></value>
-					<resources></resources>
-				</powerPlant>
-				<powerPlant>
-					<value></value>
-					<resources></resources>
-				</powerPlant>
-				<powerPlant>
-					<value></value>
-					<resources></resources>
+					<resources>
+						<resource></resource>
+						<resource></resource>
+						<resource></resource>
+						<resource></resource>
+					</resources>
+					<type></type>
+					<maxCitiesPowered></maxCitiesPowered>
+					<resourceCost></resourceCost>
 				</powerPlant>
 			</powerPlants>
 		</player>

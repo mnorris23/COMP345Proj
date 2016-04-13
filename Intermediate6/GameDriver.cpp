@@ -34,28 +34,40 @@ GameDriver::GameDriver() {
 
 	const char* gameFile = game.c_str();		
 	
-	if (newgame != 0){
-		/*
-		phaseNumber = 1;
-		stepNumber = 1;
-		turnNumber = 1;
-
-		players = newGame();
-		*/
-	}
-
 	pugi::xml_document document;
 	pugi::xml_parse_result result = document.load_file(gameFile);  // loading the map into document
 	mView = new MapView(&brazil);
 
-	if (result) { // checking if the document was parsed properly
-		cout << "XML [" << gameFile << "] parsed without errors. \n";
+	if (newgame != 0){
 
-		brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+		phaseNumber = stoi(document.child("powergrid").child("phaseNumber").child_value());
+		stepNumber = stoi(document.child("powergrid").child("stepNumber").child_value());
+		turnNumber = stoi(document.child("powergrid").child("turnNumber").child_value());
+		winningNumberOfCities = stoi(document.child("powergrid").child("winningNumberCities").child_value());
+		numberOfCitiesToPhase2 = stoi(document.child("powergrid").child("numberCitiesPhase2").child_value());
+		
+		players = loadPlayers(document.child("powergrid"));
+		
+		if (result) { // checking if the document was parsed properly
+			cout << "XML [" << gameFile << "] parsed without errors. \n";
 
+			brazil.loadSavedMap(document.child("powergrid"), players);
+
+		}
+		else {
+			cout << "XML [" << gameFile << "] parsed with errors. \n";
+		}
 	}
 	else {
-		cout << "XML [" << gameFile << "] parsed with errors. \n";
+		if (result) { // checking if the document was parsed properly
+			cout << "XML [" << gameFile << "] parsed without errors. \n";
+
+			brazil.createMap(document.child("powergrid")); // a new map object is created from the xml file
+
+		}
+		else {
+			cout << "XML [" << gameFile << "] parsed with errors. \n";
+		}
 	}
 	
 	createResourceMarket(document.child("powergrid"));
@@ -130,7 +142,50 @@ vector<Player> GameDriver::newGame() { // asks the users how many players will b
 	return players; // returns the vector of Player objects
 }
 
-
+// loads players and adds all their possessions from a saved xml game file
+vector<Player> GameDriver::loadPlayers(pugi::xml_node doc) {
+	pugi::xml_node playersNode = doc.child("players");
+	int maxPplants = 3;
+	int counter = 0;
+	vector<Player> players;
+	for (pugi::xml_node pNode = doc.child("players").child("player"); pNode; pNode = pNode.next_sibling()) {
+		counter++;
+	}
+	if (counter == 2) {
+		maxPplants = 4;
+	}
+	for (pugi::xml_node pNode = doc.child("players").child("player"); pNode; pNode = pNode.next_sibling()) {
+		string name = pNode.child("name").child_value();
+		string color = pNode.child("color").child_value();
+		int money = stoi(pNode.child("elektros").child_value());
+		Player player(name, color, money, maxPplants);
+		for (pugi::xml_node currentHouseNode = pNode.child("houses").child("location"); currentHouseNode; currentHouseNode = currentHouseNode.next_sibling()) {
+			string location = currentHouseNode.child_value();
+			House h;
+			h.location = location;
+			player.AddHouse(h);
+		}
+		for (pugi::xml_node currentPPlantNode = pNode.child("powerPlants").child("powerPlant"); currentPPlantNode; currentPPlantNode = currentPPlantNode.next_sibling()) {
+			string value = currentPPlantNode.child("value").child_value();
+			cout << value;
+			int val = stoi(value);
+			int resourceType = stoi(currentPPlantNode.child("type").child_value());
+			int maxCitiesPowered = stoi(currentPPlantNode.child("maxCitiesPowered").child_value());
+			int resCost = stoi(currentPPlantNode.child("resourceCost").child_value());
+			PowerPlantMarket::PowerPlant pplant(val, maxCitiesPowered, resCost, resourceType);
+			
+			int counter;
+			pugi::xml_node currentResource;
+			for (currentResource = currentPPlantNode.child("resources").child("resource"), counter = 0; currentResource; currentResource = currentResource.next_sibling(), counter++) {
+				int resAmount = stoi(currentResource.child_value());
+				pplant.StoreResource(counter, resAmount);
+			}
+			player.AddPowerplant(pplant, 0);
+		}
+		players.push_back(player);
+	}
+	return players;
+}
 
 void GameDriver::createResourceMarket(pugi::xml_node doc) { // function parses the resource market info from the xml
 
@@ -232,20 +287,41 @@ void GameDriver::saveGame(pugi::xml_node node) {
 
 		pugi::xml_node pplantNode;
 		int numbOfPplants = (*it).getNumberOfPowerPlants();
-		for (int i = 0; i < numbOfPplants - 3; i++) { // if the player owns more than one house, then the xml file is extended to store those houses (their locations)
+		for (int i = 0; i < numbOfPplants - 1; i++) { // if the player owns more than 1 powerplants, then the xml file is extended to store those powerplants
 			pplantNode = player.child("powerPlants");
 			pplantNode.append_copy(pplantNode.first_child());
 		}
 
 		for (pplantNode = player.child("powerPlants").child("powerPlant"), j = 0; j < numbOfPplants; pplantNode = pplantNode.next_sibling(), j++) {
 			int value = (*(*it).GetPowerplant(j)).GetValue();
-			int resources = (*(*it).GetPowerplant(j)).GetAmountStored();
+			int type = (*(*it).GetPowerplant(j)).GetResType();
+			int maxPowered = (*(*it).GetPowerplant(j)).GetMaxCitiesPowered();
+			int resCost = (*(*it).GetPowerplant(j)).GetResCost();
+
 			string v = to_string(value);
-			string r = to_string(resources);
+			string t = to_string(type);
+			string m = to_string(maxPowered);
+			string c = to_string(resCost);
+
 			const char* constV = v.c_str();
-			const char* constR = r.c_str();
+			const char* constT = t.c_str();
+			const char* constM = m.c_str();
+			const char* constC = c.c_str();
+
 			pplantNode.child("value").append_child(pugi::node_pcdata).set_value(constV);
-			pplantNode.child("resources").append_child(pugi::node_pcdata).set_value(constR);
+			pplantNode.child("type").append_child(pugi::node_pcdata).set_value(constT);
+			pplantNode.child("maxCitiesPowered").append_child(pugi::node_pcdata).set_value(constM);
+			pplantNode.child("resourceCost").append_child(pugi::node_pcdata).set_value(constC);
+
+			pugi::xml_node resourceNode;
+			int i;
+			int* r = (*(*it).GetPowerplant(j)).getResStored();
+			for (resourceNode = pplantNode.child("resources").child("resource"), i = 0; resourceNode; resourceNode = resourceNode.next_sibling(), i++) {
+				int resourceQuantity = *(r + i);
+				string rq = to_string(resourceQuantity);
+				const char* constRQ = rq.c_str();
+				resourceNode.append_child(pugi::node_pcdata).set_value(constRQ);
+			}
 		}
 	}
 

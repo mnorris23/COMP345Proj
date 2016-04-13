@@ -263,6 +263,10 @@ int PowerPlantMarket::PowerPlant::GetAmountStored() {
 	return total;
 }
 
+// returning pointer to the first element in the resStored array (coal, oil, garbage, uranium)
+int* PowerPlantMarket::PowerPlant::getResStored() {
+	return &_resStored[0];
+}
 int PowerPlantMarket::PowerPlant::GetAmountStored(int index) {
 	return _resStored[index];
 }

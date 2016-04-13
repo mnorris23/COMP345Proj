@@ -28,7 +28,7 @@ private:
 		int _citiesPowered;
 		//the number of resources stored on the card.
 		int _resStored[4];
-		//the type(s) of resource(s) used by the powerplant. 1 is coal, 2 is oil, 3 is garbage, 4 is uranium and 5 is coal AND oil. Anything else means the powerplant doesnt use resources.
+		//the type(s) of resource(s) used by the powerplant. 0 is coal, 1 is oil, 2 is garbage, 3 is uranium and 4 is coal AND oil (hybrid). Anything else means the powerplant doesnt use resources.
 		int _resType;
 		//Initializes the initial values of some variables
 		void initValues();
@@ -54,7 +54,7 @@ private:
 		//Accesses the resources at specified index
 		//Resource* GetResStoredAt(int index);
 
-
+		int* getResStored();
 
 		//returns the available space for resources
 		//The total available space is the amount in resource cost *2 minus the resources already stored
