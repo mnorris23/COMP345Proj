@@ -69,19 +69,19 @@ int Map::costToLocation(Player p, string newCityLocation) { // function calculat
 		return 0;
 	for (int i = 0; i < p.getNumberOfHouses(); i++) {
 		h.push_back(*(p.GetHouse(i)));
-		string location;
-		vector<int> minCosts;
-		for (vector<House>::iterator it = h.begin(); it != h.end(); it++) {
-			location = (*it).location;
-			minCosts.push_back(shortestDistance(location, newCityLocation));
-		}
-		int minCost = 9000;
-		for (vector<int>::iterator it = minCosts.begin(); it != minCosts.end(); it++) {
-			if (minCost > *it)
-				minCost = *it;
-		}
-		return minCost;
 	}
+	string location;
+	vector<int> minCosts;
+	for (vector<House>::iterator it = h.begin(); it != h.end(); it++) {
+		location = (*it).location;
+		minCosts.push_back(shortestDistance(location, newCityLocation));
+	}
+	int minCost = 9000;
+	for (vector<int>::iterator it = minCosts.begin(); it != minCosts.end(); it++) {
+		if (minCost > *it)
+			minCost = *it;
+	}
+	return minCost;
 }
 
 bool Map::Phase4(vector<Player> &players, PowerPlantMarket_Observer * powerplantmarket_observer, GameLog_Subject* gameLog, int winningNumbCities, int stepNumb) {
