@@ -132,6 +132,7 @@ void PowerPlantMarket::createPowerPlantMarket(pugi::xml_node doc) {
 		else if (type.compare("garbage") == 0) resType = 2;
 		else if (type.compare("uranium") == 0) resType = 3;
 		else if (type.compare("hybrid") == 0) resType = 4;
+		else if (type.compare("step3") == 0) resType = -2;
 		else resType = -1;
 
 		powerplants.push_back(PowerPlant(value, maxCitiesPowered, resCost, resType));
@@ -168,12 +169,15 @@ followed by all the power plants left in random order.
 void PowerPlantMarket::initDeck(){
 	deck.push_back(powerplants[0]);
 	powerplants.erase(powerplants.begin());
-	int size = powerplants.size();
+	int size = powerplants.size() - 1;
 	for (int i = 0; i < size; i++) {
-		int v1 = rand() % (powerplants.size());
+		int v1 = rand() % (powerplants.size() - 1);
 		deck.push_back(powerplants[v1]);
 		powerplants.erase(powerplants.begin() + v1);
 	}
+	//adding step 3 card
+	deck.push_back(powerplants[0]);
+	powerplants.erase(powerplants.begin());
 }
 
 /*

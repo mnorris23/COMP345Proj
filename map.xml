@@ -1717,6 +1717,12 @@
 			<burns>0</burns>
 			<powers>6</powers>
 		</powerPlant>
+		<powerPlant>
+			<type>step3</type>
+			<cost>0</cost>
+			<burns>0</burns>
+			<powers>0</powers>
+		</powerPlant>
 	</availablePowerPlants>
 	<resourceMarket>
 		<coal>24</coal>

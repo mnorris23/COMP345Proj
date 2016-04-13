@@ -146,14 +146,14 @@ bool Map::Phase4(vector<Player> &players, PowerPlantMarket_Observer * powerplant
 	for (vector<Player>::reverse_iterator rit = players.rbegin(); rit != players.rend(); rit++) {
 
 		Player* currentPlayer = &(*rit);
-		cout << "\nPlayer " << (*currentPlayer).getName() << " it is your turn to buy house(s). Would you like to buy a house? Enter 0 if so, or -1 to pass: \n";
+		cout << "\nPlayer " << (*currentPlayer).getName() << " it is your turn to buy house(s). Would you like to buy a house? \nEnter 0 if so, or -1 to pass: \n";
 		cin >> done;
 
 		(*currentPlayer).displayPlayerInformation(powerplantmarket_observer);
 
 		while (done == 0) { // looping until the player is done buying houses (enters -1)
 			cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-			cout << "Please enter the city name: \n";
+			cout << "\nPlease enter the city name: (or press s to skip)\n";
 			cin.getline(cityName, sizeof(cityName));
 			if (((string)cityName).length() < 4)
 				break;

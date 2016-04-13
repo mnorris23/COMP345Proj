@@ -200,7 +200,7 @@ int ResourceMarket::BuyResource(int type, int amount, int currentFunds) {
 	int totalCostToBuy = 0;
 	//determine the total cost to buy the amount of resources 
 	while (total > 0) {
-		totalCostToBuy += GetResourceCost(type, _resourcesInMarket[type] - amount + 1);
+		totalCostToBuy += GetResourceCost(type, _resourcesInMarket[type] - total + 1);
 		total--;
 	}
 

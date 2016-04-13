@@ -338,11 +338,13 @@ void GameDriver::saveGame(pugi::xml_node node) {
 			int resType = p[i][j].GetResType();
 			string type;
 			switch (resType) {
+				case -2: type = "step3"; break;
 				case 0: type = "coal"; break;
 				case 1: type = "oil"; break;
 				case 2: type = "garbage"; break;
 				case 3: type = "uranium"; break;
 				case 4: type = "hybrid"; break;
+				
 				default: type = "eco"; break;
 			}
 			int value = p[i][j].GetValue();
@@ -517,6 +519,8 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 
 		phaseNumber = 1;
 
+		turnNumber++;
+
 		if (saveGameOption(doc))
 			return;
 	}
@@ -567,12 +571,13 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 		if (phaseNumber == 5){
 			Phase5();
 			phaseNumber = 1;
+			turnNumber++;
 			if (saveGameOption(doc))
 				return;
 		}
 	}
 	while (lastTurn == false) {
-		turnNumber++;
+		
 		//Determine player order
 		
 		playerOrder(players);
@@ -634,7 +639,9 @@ void GameDriver::playTurn(pugi::xml_document& doc) {
 		Phase5();
 
 		phaseNumber = 1;
-		
+
+		turnNumber++;
+
 		if (saveGameOption(doc))
 			return;
 	}
@@ -946,6 +953,7 @@ void GameDriver::Phase5() {
 		for (int j = 0; j < (*i).getNumberOfPowerPlants(); j++) {
 			if ((*(*i).GetPowerplant(j)).GetCurrentCitiesPowered() > 0) {
 				(*resourceMarket).RestoreResources((*(*i).GetPowerplant(j)).GetResType(), (*(*i).GetPowerplant(j)).ConsumeResources());
+				
 				string res = "";
 				switch ((*(*i).GetPowerplant(j)).GetResType()) {
 				case 0: res = " coal "; break;
@@ -956,6 +964,7 @@ void GameDriver::Phase5() {
 				}
 				string str = "\nPowerPlant #" + to_string((*(*i).GetPowerplant(j)).GetValue()) + " consumes " + to_string((*(*i).GetPowerplant(j)).GetResCost()) + res;
 				str += "to power " + to_string((*(*i).GetPowerplant(j)).GetCurrentCitiesPowered()) + " cities.\n";
+				(*(*i).GetPowerplant(j)).RemoveCities((*(*i).GetPowerplant(j)).GetCurrentCitiesPowered());
 				gameLog->updateLog(str, phaseNumber, false, (*i).getColor());
 			}
 		}
