@@ -160,9 +160,48 @@ bool Player::AddPowerplant(PowerPlantMarket::PowerPlant powerplant, int cost) {
 	//If the player can't afford it
 	if (cost > money)
 		return false;
-	else {//If the player already has maxNumberOfPowerplants powerplants, replaces the last one 
+	else {//If the player already has maxNumberOfPowerplants powerplants, let the player choose which one he wants to replace
 		if (numberOfPowerPlant == maxNumberOfPowerplants) {
-			_powerplants[numberOfPowerPlant - 1] = powerplant;
+			int ppToReplace;
+			for (int j = 0; j < 3; j++) {
+				DisplayPowerplant(_powerplants[j]);
+			}
+			do {
+				cout << "You already have the maximum number of powerplant. Which power plant do you wish to remove? \nEnter the index of the powerplant to remove(1-3): ";
+				cin >> ppToReplace;
+			} while (ppToReplace > 3 || ppToReplace < 1);
+			for (int i = 0; i < 4; i++) {
+				int totalToTransfer = _powerplants[ppToReplace - 1].GetAmountStored(i);
+				if (_powerplants[ppToReplace - 1].GetAmountStored(i) > 0) {
+					string res = "";
+					switch (i) {
+					case 0: res = " coal "; break;
+					case 1: res = " oil "; break;
+					case 2: res = " garbage "; break;
+					case 3: res = " uranium "; break;
+					}
+					cout << "\n\nSummary of PowerPlants:\n\n";
+					for (int j = 0; j < 3; j++) {
+						DisplayPowerplant(_powerplants[j]);
+					}
+					int ppToTransferRes;
+					int amountToTransfer;
+					do {
+						cout << "PowerPlant #" + to_string(_powerplants[ppToReplace - 1].GetValue()) + " has " + to_string(_powerplants[ppToReplace - 1].GetAmountStored(i)) + res;
+						cout << "Choose the powerplant where to transfer you resources or 0 if you don't want to transfer(resources will be lost): ";
+						cin >> ppToTransferRes;
+						do {
+							cout << "How much " + res + " do you want to transfer to powerplant #" + to_string(_powerplants[ppToTransferRes - 1].GetValue()) + ": ";
+							cin >> amountToTransfer;
+						} while (amountToTransfer > totalToTransfer || amountToTransfer < 0);
+						bool result = SwapResource(ppToTransferRes - 1, ppToReplace - 1, i, amountToTransfer);
+						if (!result)
+							cout << "Transer didnt't work. Try again. Maybe";
+						totalToTransfer -= amountToTransfer;
+					} while (totalToTransfer > 0 || amountToTransfer < 1);
+				}
+			}
+			_powerplants[ppToReplace - 1] = powerplant;
 			money = money - cost;
 		}
 		else {//adds it to the array
@@ -216,4 +255,24 @@ int Player::getMaxValuePowerplant() {
 			maxValue = _powerplants[i].GetValue();
 	}
 	return maxValue;
+}
+
+void Player::DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant) {
+	//a string with the name of the resource being stored
+	std::string type;
+	//Setting the name according to type
+	switch (powerplant.GetResType()) {
+	case 0: type = "Coal"; break;
+	case 1: type = "Oil"; break;
+	case 2: type = "Garbage"; break;
+	case 3: type = "Uranium"; break;
+	case 4: type = "Coal and Oil"; break;
+	default: type = "None";
+	}
+	//displaying powerplant name, cities powered, max cities powered, resource needed, resource cost and resources stored
+	cout << "\nValue: " << powerplant.GetValue()
+		<< "\n\tMax Cities Powered: " << powerplant.GetMaxCitiesPowered()
+		<< "\n\tResources needed: " << type
+		<< "\n\tResource cost: " << powerplant.GetResCost()
+		<< "\n\Number of Resources Stored: " << powerplant.GetAmountStored() << endl;
 }

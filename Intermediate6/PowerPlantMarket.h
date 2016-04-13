@@ -50,6 +50,7 @@ private:
 		int GetResType();
 		//Get the amount of resources currently stored
 		int GetAmountStored();
+		int GetAmountStored(int);
 		//Accesses the resources at specified index
 		//Resource* GetResStoredAt(int index);
 

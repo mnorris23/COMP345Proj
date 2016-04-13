@@ -41,22 +41,35 @@ bool PowerPlantMarket::updateMarket(int row, int column, bool erased) {
 	if (!erased) {
 		deck.push_back(market[row][column]);
 	}
+	if (row == 0) {
+		//rearranging present market
+		for (int i = column; i < 3; i++){
+			market[0][i] = market[0][i + 1];
+		}
+		market[0][3] = market[1][0];
 
-	//rearranging present market
-	for (int i = column; i < 3; i++){
-		market[0][i] = market[0][i + 1];
+		//rearranging future market
+		for (int i = 0; i < 3; i++){
+			market[1][i] = market[1][i + 1];
+		}
+		//draw first powerplant from the deck
+		market[1][3] = deck[0];
+		deck.erase(deck.begin());
+		if (market[1][3].GetValue() == 0) {
+			step3 = true;
+		}
 	}
-	market[0][3] = market[1][0];
-
-	//rearranging future market
-	for (int i = 0; i < 3; i++){
-		market[1][i] = market[1][i + 1];
-	}
-	//draw first powerplant from the deck
-	market[1][3] = deck[0];
-	deck.erase(deck.begin());
-	if (market[1][3].GetValue() == 0) {
-		step3 = true;
+	else {
+		//rearranging future market
+		for (int i = column; i < 3; i++){
+			market[1][i] = market[1][i + 1];
+		}
+		//draw first powerplant from the deck
+		market[1][3] = deck[0];
+		deck.erase(deck.begin());
+		if (market[1][3].GetValue() == 0) {
+			step3 = true;
+		}
 	}
 
 	reorderMarket();
@@ -245,6 +258,10 @@ int PowerPlantMarket::PowerPlant::GetAmountStored() {
 		total += _resStored[i];
 	}
 	return total;
+}
+
+int PowerPlantMarket::PowerPlant::GetAmountStored(int index) {
+	return _resStored[index];
 }
 
 

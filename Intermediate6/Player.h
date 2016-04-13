@@ -115,6 +115,7 @@ public:
 	@return The name of the player, the number of cities he owns, the money he has, the power plant he owns
 	*/
 	void displayPlayerInformation(PowerPlantMarket_Observer*);
+	void DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant);
 	//Method to get how much the player is to be payed
 	std::string getPayment();
 	//Method to get the highest value out of the player's powerplants.

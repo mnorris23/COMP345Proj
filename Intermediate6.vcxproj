@@ -37,7 +37,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -97,6 +97,11 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="intermediate6\GameDriver.cpp" />
     <ClCompile Include="intermediate6\GameLogDecorator.cpp" />
@@ -135,7 +140,6 @@
     <ClInclude Include="intermediate6\Observable.h" />
     <ClInclude Include="intermediate6\Observer.h" />
     <ClInclude Include="intermediate6\Player.h" />
-    <ClInclude Include="intermediate6\PowerPlant.h" />
     <ClInclude Include="intermediate6\PowerPlantMarket.h" />
     <ClInclude Include="intermediate6\PowerPlantMarket_Observer.h" />
     <ClInclude Include="intermediate6\pugiconfig.hpp" />
