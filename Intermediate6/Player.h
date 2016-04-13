@@ -149,8 +149,6 @@ public:
 	//Method to get the highest value out of the player's powerplants.
 	int getMaxValuePowerplant();
 
-	
-	void DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant);
 
 	bool canBid;
 	bool canBidForAuction;

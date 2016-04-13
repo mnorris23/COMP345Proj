@@ -37,7 +37,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -150,7 +150,6 @@
     <ClInclude Include="intermediate6\Observer.h" />
     <ClInclude Include="intermediate6\Player.h" />
     <ClInclude Include="Intermediate6\PlayerView.h" />
-   
     <ClInclude Include="intermediate6\PowerPlantMarket.h" />
     <ClInclude Include="intermediate6\PowerPlantMarket_Observer.h" />
     <ClInclude Include="intermediate6\pugiconfig.hpp" />
