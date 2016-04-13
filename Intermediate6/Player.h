@@ -13,15 +13,14 @@
 #include <iostream>
 #include <sstream>
 
+class Strategy;
+
 /**
 This class describes all the possessions of a player
 */
 class Player : public ASubject {
 
 public:
-
-
-
 
 	//Strategy constructors
 
@@ -34,11 +33,6 @@ public:
 	void Player::setStrategy(Strategy *newStrat);
 
 	void Player::executeStrategy();  //execute the turn for the player with the aligned strategy
-
-
-	void Attach(Observer *o);
-	void Detach(Observer *o);
-	void Notify();
 
 
 

@@ -37,7 +37,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -98,7 +98,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Intermediate6\AggressiveStrategy.cpp" />
     <ClCompile Include="Intermediate6\ASubject.cpp" />
+    <ClCompile Include="Intermediate6\DefensiveStrategy.cpp" />
     <ClCompile Include="intermediate6\GameDriver.cpp" />
     <ClCompile Include="intermediate6\GameLogDecorator.cpp" />
     <ClCompile Include="intermediate6\GameLogPhase.cpp" />
@@ -117,14 +119,16 @@
     <ClCompile Include="intermediate6\PowerPlantMarket.cpp" />
     <ClCompile Include="intermediate6\PowerPlantMarket_Observer.cpp" />
     <ClCompile Include="intermediate6\pugixml.cpp" />
+    <ClCompile Include="Intermediate6\RandomStrategy.cpp" />
     <ClCompile Include="intermediate6\ResourceMarket.cpp" />
     <ClCompile Include="Intermediate6\Strategy.cpp" />
     <ClCompile Include="Intermediate6\ResourceMarket_Observer.cpp" />
     <ClCompile Include="intermediate6\SummaryCard.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Downloads\COMP345S-26375200-Assn3\IObserver.h" />
+    <ClInclude Include="Intermediate6\AggressiveStrategy.h" />
     <ClInclude Include="Intermediate6\ASubject.h" />
+    <ClInclude Include="Intermediate6\DefensiveStrategy.h" />
     <ClInclude Include="intermediate6\GameDriver.h" />
     <ClInclude Include="intermediate6\GameLogDecorator.h" />
     <ClInclude Include="intermediate6\GameLogPhase.h" />
@@ -146,7 +150,8 @@
     <ClInclude Include="intermediate6\PowerPlantMarket_Observer.h" />
     <ClInclude Include="intermediate6\pugiconfig.hpp" />
     <ClInclude Include="intermediate6\pugixml.hpp" />
-    <ClInclude Include="intermediate6\ResourceMarket.h" />
+    <ClInclude Include="Intermediate6\RandomStrategy.h" />
+    <ClInclude Include="Intermediate6\Strategy.h" />
     <ClInclude Include="intermediate6\SummaryCard.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
