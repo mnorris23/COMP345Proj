@@ -4,14 +4,38 @@
 #include "PowerPlantMarket.h"
 #include "PowerPlantMarket_Observer.h"
 #include "SummaryCard.h"
+#include "ASubject.h"
+#include "Strategy.h"
+#include "Observer.h"
+#include "PlayerView.h"
+#include "Map.h"
 #include <string>
+#include <iostream>
 #include <sstream>
+
+class Strategy;
 
 /**
 This class describes all the possessions of a player
 */
-class Player {
+class Player : public ASubject {
+
 public:
+
+	//Strategy constructors
+
+	Player::Player(Strategy *initStrat);
+
+	Player::Player(std::string name, std::string color, int money, Strategy *initStrat);
+
+	//Strategy methods
+
+	void Player::setStrategy(Strategy *newStrat);
+
+	void Player::executeStrategy();  //execute the turn for the player with the aligned strategy
+
+
+
 	/**
 	The main constructor for a player
 	@param name The name of the player
@@ -114,6 +138,10 @@ public:
 	Method to obtain all the relevant information about the possession of a player
 	@return The name of the player, the number of cities he owns, the money he has, the power plant he owns
 	*/
+
+	void displayPlayerInformation();
+
+
 	void displayPlayerInformation(PowerPlantMarket_Observer*);
 	void DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant);
 	//Method to get how much the player is to be payed
@@ -121,9 +149,15 @@ public:
 	//Method to get the highest value out of the player's powerplants.
 	int getMaxValuePowerplant();
 
+	
+	void DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant);
+
 	bool canBid;
 	bool canBidForAuction;
 private:
+
+	//Player sttrategy attribute
+	Strategy *strategy;
 	//An array containing the houses owned by the player
 	House _houses[24];
 	//An array containing the powerplants owned by the player

@@ -16,7 +16,8 @@ public:
 
 	class Connection;
 	class City;
-	std::vector<City> cities;
+	
+	std::vector<City> cities;	
 	static int numbOfVertices;
 	std::vector<Player*> playerOrder;
 
@@ -32,6 +33,7 @@ public:
 		int numbOfOccupants; // current number of occupants
 
 	public:
+
 		City() {} // default constructor
 		City(std::string, std::string, double, double);
 
@@ -44,6 +46,7 @@ public:
 		int getNumbOfAdjCities() { return numbOfAdjCities; }
 		int getNumbOfOccupants() { return numbOfOccupants; }
 		Player* getOccupants() { return occupants[0]; }
+		Player* getOccupants(int k) { return occupants[k]; }
 		std::vector<Connection> getAdjCities() { return adjCities; }
 
 		// mutators
