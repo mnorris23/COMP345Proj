@@ -137,10 +137,39 @@ vector<Player> GameDriver::newGame() { // asks the users how many players will b
 		cin >> name;
 		cout << "What house color would you like?\n"; // every player is asked to choose a color
 		cin >> color;
-		players.push_back(Player(name, color, maxPplants));
+
+		
+		bool correct = checkColor(color);
+
+		while (!correct){
+			if (correct)
+				players.push_back(Player(name, color, maxPplants));
+			else{
+				cout << "Please choose a valid house color. What house color would you like?\n"; // initial color incorrect
+				cin >> color;
+				correct = checkColor(color);
+			}
+		}
+
 	}
+
 	return players; // returns the vector of Player objects
 }
+
+bool GameDriver::checkColor(std::string color1) {
+
+	bool correct = false;
+
+	std::string colors[] = { "green", "blue", "red", "yellow", "orange", "pink" };
+
+	for (int i = 0; i < 6; i++)
+		if (color1.compare(colors[i]) == 0)
+			correct = true;
+
+	return correct;
+
+}
+
 
 // loads players and adds all their possessions from a saved xml game file
 vector<Player> GameDriver::loadPlayers(pugi::xml_node doc) {

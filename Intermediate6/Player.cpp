@@ -107,9 +107,9 @@ Player::Player(std::string aname, int acolor, int amoney, int maxNumberOfPplants
 	case 3: color = "blue"; break;
 	case 4: color = "pink"; break;
 	case 5: color = "orange"; break;
-
-		Notify();
 	}
+
+	Notify();
 }
 
 Player::Player() : maxNumberOfPowerplants(3) {
@@ -375,3 +375,5 @@ void Player::DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant) {
 		<< "\n\t Resource cost: " << powerplant.GetResCost()
 		<< "\n\t Number of Resources Stored: " << powerplant.GetAmountStored() << endl;
 }
+
+

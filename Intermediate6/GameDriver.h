@@ -76,4 +76,6 @@ public:
 	void saveGame(pugi::xml_node);
 	bool saveGameOption(pugi::xml_document&);
 	vector<Player> loadPlayers(pugi::xml_node);
+
+	bool checkColor(std::string color1);
 };
