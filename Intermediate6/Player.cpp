@@ -203,6 +203,7 @@ bool Player::AddResources(int index, int type, int amount, int totalCost) {
 	}
 
 	Notify();
+	return true;
 }
 
 bool Player::AddHouse(House house, int cost) {
@@ -367,8 +368,8 @@ void Player::DisplayPowerplant(PowerPlantMarket::PowerPlant powerplant) {
 	}
 	//displaying powerplant name, cities powered, max cities powered, resource needed, resource cost and resources stored
 	cout << "\nValue: " << powerplant.GetValue()
-		<< "\n\tMax Cities Powered: " << powerplant.GetMaxCitiesPowered()
-		<< "\n\tResources needed: " << type
-		<< "\n\tResource cost: " << powerplant.GetResCost()
-		<< "\n\Number of Resources Stored: " << powerplant.GetAmountStored() << endl;
+		<< "\n\t Max Cities Powered: " << powerplant.GetMaxCitiesPowered()
+		<< "\n\t Resources needed: " << type
+		<< "\n\t Resource cost: " << powerplant.GetResCost()
+		<< "\n\t Number of Resources Stored: " << powerplant.GetAmountStored() << endl;
 }

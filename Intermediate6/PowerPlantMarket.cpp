@@ -14,8 +14,11 @@ PowerPlantMarket::PowerPlantMarket(pugi::xml_node doc) {
 //Delete the 2d array of powerplant
 PowerPlantMarket::~PowerPlantMarket() {
 	delete [] market[0];
+	market[0] = NULL;
 	delete [] market[1];
+	market[1] = NULL;
 	delete [] market;
+	market = NULL;
 	delete [] marketStep3;
 }
 

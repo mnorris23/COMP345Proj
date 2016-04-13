@@ -76,6 +76,6 @@ void PowerPlantMarket_Observer::DisplayPowerplant(PowerPlantMarket::PowerPlant p
 		<< "\n\tMax Cities Powered: " << powerplant.GetMaxCitiesPowered()
 		<< "\n\tResources needed: " << type
 		<< "\n\tResource cost: " << powerplant.GetResCost()
-		<< "\n\Number of Resources Stored: " << powerplant.GetAmountStored() << endl;
+		<< "\n\tNumber of Resources Stored: " << powerplant.GetAmountStored() << endl;
 }
 
