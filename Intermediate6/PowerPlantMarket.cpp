@@ -19,7 +19,7 @@ PowerPlantMarket::~PowerPlantMarket() {
 	market[1] = NULL;
 	delete [] market;
 	market = NULL;
-	delete [] marketStep3;
+	//delete [] marketStep3;
 }
 
 //Retrieve a powerplant from the power plant market. Row 0 is the present market
