@@ -107,10 +107,22 @@ vector<Player> GameDriver::newGame() { // asks the users how many players will b
 	int numbOfPlayers;
 	cout << "How many players will be playing?\n";
 	cin >> numbOfPlayers;
+
+
+	bool correct = checkNumber(numbOfPlayers);
+
+	while (!correct){
+		cout << "Please choose a valid number of players. How many players will be playing?\n"; // initial number incorrect
+		cin >> numbOfPlayers;
+		correct = checkNumber(numbOfPlayers);  	}
+
+
+
 	while (numbOfPlayers < 2 || numbOfPlayers > 6) {
 		cout << "This game is played with 2-6 players!\nPlease try again:\n";
 		cin >> numbOfPlayers;
 	}
+
 	int maxPplants = 3;
 	if (numbOfPlayers == 2) {
 		maxPplants = 4;
@@ -142,14 +154,12 @@ vector<Player> GameDriver::newGame() { // asks the users how many players will b
 		bool correct = checkColor(color);
 
 		while (!correct){
-			if (correct)
-				players.push_back(Player(name, color, maxPplants));
-			else{
 				cout << "Please choose a valid house color. What house color would you like?\n"; // initial color incorrect
 				cin >> color;
 				correct = checkColor(color);
-			}
 		}
+
+		players.push_back(Player(name, color, maxPplants));
 
 	}
 
@@ -169,6 +179,16 @@ bool GameDriver::checkColor(std::string color1) {
 	return correct;
 
 }
+
+bool GameDriver::checkNumber(int num1) {
+
+	bool correct = false;
+
+	if (num1>1 && num1<7)
+		return correct;
+
+}
+
 
 
 // loads players and adds all their possessions from a saved xml game file
@@ -829,7 +849,7 @@ bool GameDriver::Auction(int row, int column) {
 	if (howmanybid == 0) {
 		cout << "You are the last player in the auction and no one made any bet." << endl;
 		cout << "Do you want to get powerplant #" << powerplantmarket->getPowerPlant(row, column).GetValue() << " for the minimum value of " << (_highestBid + 1) << "? ";
-		cout << "0 to not buy the powerplant and 1 to buy the powerplant for " << (_highestBid + 1) << " ";
+		cout << "0 to not buy the powerplant and 1 to buy the powerplant for " << (_highestBid + 1) << " : ";
 		int pp;
 		cin >> pp;
 		if (pp == 0){
@@ -841,7 +861,7 @@ bool GameDriver::Auction(int row, int column) {
 			}
 		}
 		else {
-			cout << "You decide to buy powerplant #" << powerplantmarket->getPowerPlant(row, column).GetValue() << " for the minimum value of " << (_highestBid + 1) << endl;
+			cout << "\nYou decide to buy powerplant #" << powerplantmarket->getPowerPlant(row, column).GetValue() << " for the minimum value of " << (_highestBid + 1) << endl;
 		}
 	}
 

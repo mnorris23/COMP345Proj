@@ -78,4 +78,5 @@ public:
 	vector<Player> loadPlayers(pugi::xml_node);
 
 	bool checkColor(std::string color1);
+	bool checkNumber(int num1);
 };
