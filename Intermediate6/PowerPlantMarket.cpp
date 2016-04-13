@@ -14,9 +14,12 @@ PowerPlantMarket::PowerPlantMarket(pugi::xml_node doc) {
 //Delete the 2d array of powerplant
 PowerPlantMarket::~PowerPlantMarket() {
 	delete [] market[0];
+	market[0] = NULL;
 	delete [] market[1];
+	market[1] = NULL;
 	delete [] market;
-	//delete [] marketStep3;
+	market = NULL;
+	delete [] marketStep3;
 }
 
 //Retrieve a powerplant from the power plant market. Row 0 is the present market
@@ -42,22 +45,22 @@ bool PowerPlantMarket::updateMarket(int row, int column, bool erased) {
 		deck.push_back(market[row][column]);
 	}
 	if (row == 0) {
-	//rearranging present market
-	for (int i = column; i < 3; i++){
-		market[0][i] = market[0][i + 1];
-	}
-	market[0][3] = market[1][0];
+		//rearranging present market
+		for (int i = column; i < 3; i++){
+			market[0][i] = market[0][i + 1];
+		}
+		market[0][3] = market[1][0];
 
-	//rearranging future market
-	for (int i = 0; i < 3; i++){
-		market[1][i] = market[1][i + 1];
-	}
-	//draw first powerplant from the deck
-	market[1][3] = deck[0];
-	deck.erase(deck.begin());
-	if (market[1][3].GetValue() == 0) {
-		step3 = true;
-	}
+		//rearranging future market
+		for (int i = 0; i < 3; i++){
+			market[1][i] = market[1][i + 1];
+		}
+		//draw first powerplant from the deck
+		market[1][3] = deck[0];
+		deck.erase(deck.begin());
+		if (market[1][3].GetValue() == 0) {
+			step3 = true;
+		}
 	}
 	else {
 		//rearranging future market

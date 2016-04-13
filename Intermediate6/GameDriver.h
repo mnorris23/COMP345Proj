@@ -47,7 +47,7 @@ private:
 	//creates a vector of players for a new game
 	vector<Player> newGame();
 
-	void Auction(int row, int col);
+	bool Auction(int row, int col);
 	int bid(int index, int _higgestBid);
 
 	Map brazil;
@@ -76,4 +76,6 @@ public:
 	void saveGame(pugi::xml_node);
 	bool saveGameOption(pugi::xml_document&);
 	vector<Player> loadPlayers(pugi::xml_node);
+
+	bool checkColor(std::string color1);
 };

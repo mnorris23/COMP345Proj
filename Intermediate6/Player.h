@@ -153,6 +153,9 @@ public:
 
 	bool canBid;
 	bool canBidForAuction;
+
+	
+
 private:
 
 	//Player sttrategy attribute
