@@ -72,7 +72,25 @@
     <ClCompile Include="Intermediate6\GameLog_AllPhase_AllPlayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Intermediate6\ASubject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Intermediate6\PlayerView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Intermediate6\Strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Intermediate6\ResourceMarket_Observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Intermediate6\AggressiveStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Intermediate6\DefensiveStrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Intermediate6\RandomStrategy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,9 +143,6 @@
     <ClInclude Include="intermediate6\PowerPlantMarket_Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="intermediate6\ResourceMarket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="intermediate6\SummaryCard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -140,7 +155,22 @@
     <ClInclude Include="Intermediate6\GameLog_AllPhase_AllPlayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Intermediate6\ResourceMarket_Observer.h">
+    <ClInclude Include="Intermediate6\ASubject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\PlayerView.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\Strategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\AggressiveStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\DefensiveStrategy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Intermediate6\RandomStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

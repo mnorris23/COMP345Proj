@@ -737,7 +737,12 @@ void GameDriver::Phase2Step3() {
 }
 
 void GameDriver::Auction(int row, int column) {
-	int _highestBid = powerplantmarket->getPowerPlant(row, column).GetValue() - 1;
+	
+	int _highestBid;
+	if (stepNumber < 3)
+		_highestBid = powerplantmarket->getPowerPlant(row, column).GetValue() - 1;
+	else
+		_highestBid = powerplantmarket->getPowerPlant(column).GetValue() - 1;
 
 	int bidders = 0;
 
@@ -783,13 +788,23 @@ void GameDriver::Auction(int row, int column) {
 	for (vector<Player>::iterator i = players.begin(); i < players.end(); i++) {
 		if ((*i).canBid == true) {
 			(*i).canBidForAuction = false;
-			if (_highestBid < powerplantmarket->getPowerPlant(row, column).GetValue()) {
-				_highestBid++;
+			if (stepNumber < 3) {
+				if (_highestBid < powerplantmarket->getPowerPlant(row, column).GetValue()) {
+					_highestBid++;
+				}
+			}
+			else {
+				if (_highestBid < powerplantmarket->getPowerPlant(column).GetValue()) {
+					_highestBid++;
+				}
 			}
 			string str = (*i).getName() + " is the winner of the auction of powerplant #" + to_string(powerplantmarket->getPowerPlant(row, column).GetValue()) + " for " + to_string(_highestBid) + " elektros\n";
 			str += (*i).getName() + " had " + to_string((*i).getMoney()) + " and now has " + to_string((*i).getMoney() - _highestBid) + " elektros.\n";
 			gameLog->updateLog(str, 2, false, (*i).getColor());
-			(*i).AddPowerplant(powerplantmarket->getPowerPlant(row, column), _highestBid);		
+			if (stepNumber < 3)
+				(*i).AddPowerplant(powerplantmarket->getPowerPlant(row, column), _highestBid);	
+			else 
+				(*i).AddPowerplant(powerplantmarket->getPowerPlant(column), _highestBid);
 			break;
 		}
 	}
@@ -868,7 +883,7 @@ void GameDriver::Phase3() {
 void GameDriver::Phase5() {
 	//Bureaucracy
 
-
+	int maxNumberOfHouses = 0;
 	string line = "\n---------------------------------------------------------------\n";
 	gameLog->updateLog(line + "Turn: " + to_string(turnNumber) + "\nPhase: " + to_string(phaseNumber) + "\nStep: " + to_string(stepNumber) + line, phaseNumber, false, "all");
 
@@ -878,6 +893,8 @@ void GameDriver::Phase5() {
 		//ask the player how much he wants each powerplant to power
 		//ajust the value in powerplant
 		int citiesToPower = (*i).getNumberOfHouses();
+		if ((*i).getNumberOfHouses() > maxNumberOfHouses)
+			maxNumberOfHouses = (*i).getNumberOfHouses();
 		int amountOfCitiesPowered = 0;
 		(i)->displayPlayerInformation(powerplantmarket_observer);
 
@@ -956,6 +973,8 @@ void GameDriver::Phase5() {
 	if (stepNumber != 3) {
 		powerplantmarket->updateMarket(1, 3, false);
 	}
+	if (maxNumberOfHouses >= powerplantmarket->getPowerPlant(0, 0).GetValue())
+		powerplantmarket->updateMarket(1, 0, true);
 	gameLog->updateLog("\nThis is the end of the bureaucracy phase for turn #" + to_string(turnNumber) + "\n\n\n", phaseNumber, false, "all");
 	
 	while (true) {
