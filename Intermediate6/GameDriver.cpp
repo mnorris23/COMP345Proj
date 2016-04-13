@@ -188,9 +188,11 @@ vector<Player> GameDriver::loadPlayers(pugi::xml_node doc) {
 		Player player(name, color, money, maxPplants);
 		for (pugi::xml_node currentHouseNode = pNode.child("houses").child("location"); currentHouseNode; currentHouseNode = currentHouseNode.next_sibling()) {
 			string location = currentHouseNode.child_value();
-			House h;
-			h.location = location;
-			player.AddHouse(h);
+			if (!location.empty()) {
+				House h;
+				h.location = location;
+				player.AddHouse(h);
+			}
 		}
 		for (pugi::xml_node currentPPlantNode = pNode.child("powerPlants").child("powerPlant"); currentPPlantNode; currentPPlantNode = currentPPlantNode.next_sibling()) {
 			string value = currentPPlantNode.child("value").child_value();
