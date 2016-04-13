@@ -142,14 +142,12 @@ vector<Player> GameDriver::newGame() { // asks the users how many players will b
 		bool correct = checkColor(color);
 
 		while (!correct){
-			if (correct)
-				players.push_back(Player(name, color, maxPplants));
-			else{
-				cout << "Please choose a valid house color. What house color would you like?\n"; // initial color incorrect
-				cin >> color;
-				correct = checkColor(color);
-			}
+			cout << "Please choose a valid house color. What house color would you like?\n"; // initial color incorrect
+			cin >> color;
+			correct = checkColor(color);
 		}
+		
+		players.push_back(Player(name, color, maxPplants));
 
 	}
 
