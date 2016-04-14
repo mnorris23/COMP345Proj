@@ -184,7 +184,8 @@ bool GameDriver::checkNumber(int num1) {
 
 	bool correct = false;
 
-	if (num1>1 && num1<7)
+	if (num1>1 && num1 < 7)
+		correct = true;
 	return correct;
 
 }
